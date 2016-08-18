@@ -7,7 +7,7 @@
 @import 'tachyons-box-sizing/css/tachyons-box-sizing.css';
 @import 'tachyons-flexbox/css/tachyons-flexbox.css';
 @import 'tachyons-position/css/tachyons-position.css';
-@import 'tachyons-overflow/css/tachyons-overflow.css';
+/*@import 'tachyons-overflow/css/tachyons-overflow.css';*/
 @import 'tachyons-display/css/tachyons-display.css';
 /*@import 'tachyons-floats/css/tachyons-floats.css';
 @import 'tachyons-clears/css/tachyons-clears.css';*/
@@ -19,7 +19,7 @@
 @import 'tachyons-border-style/css/tachyons-border-style.css';
 @import 'tachyons-border-colors/css/tachyons-border-colors.css';
 @import 'tachyons-border-widths/css/tachyons-border-widths.css';
-@import 'tachyons-border-radius/css/tachyons-border-radius.css';
+/*@import 'tachyons-border-radius/css/tachyons-border-radius.css';*/
 
 @import 'tachyons-typography/css/tachyons-typography.css';
 @import 'tachyons-line-height/css/tachyons-line-height.css';
@@ -31,7 +31,7 @@
 @import 'tachyons-type-scale/css/tachyons-type-scale.css';
 @import 'tachyons-text-align/css/tachyons-text-align.css';
 
-@import 'tachyons-vertical-align/css/tachyons-vertical-align.css';
+/*@import 'tachyons-vertical-align/css/tachyons-vertical-align.css';*/
 @import 'tachyons-white-space/css/tachyons-white-space.css';
 @import 'tachyons-hovers/css/tachyons-hovers.css';
 @import 'tachyons-links/css/tachyons-links.css';
