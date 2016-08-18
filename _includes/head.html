@@ -1,0 +1,36 @@
+<meta charset="utf-8">
+<title>{{ site.title }}</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="ClearType" content="true">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="description" content="{{ site.meta_description }}">
+
+{% if site.google_analytics.id %}
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+{% endif %}
+
+{% include social_meta_tags.html %}
+
+{% if page.robots %}
+<meta name="robots" content="{{ page.robots }}">
+{% else %}
+<meta name="robots" content="all">
+{% endif %}
+
+{% if page.url == "/404.html" %}
+<meta http-equiv="refresh" content="0; url=/">
+{% endif %}
+
+{% include favicons.html %}
+
+<link href="{{ page.url | replace:'.html','' | prepend: site.baseurl | prepend: site.url }}" rel="canonical">
+
+<link href="/assets/styles/site.css" rel="stylesheet" inline>
+
+{% include google_analytics.html %}

@@ -1,0 +1,33 @@
+---
+layout: base
+---
+
+
+<div class="mw9 center">
+  <ul class="flex flex-wrap justify-center ma0 pa0 list">
+    {% for char in site.data.unicode %}
+      <li class="flex flex-column w5 ma3 pa3 ba b--light-gray tl">
+        <a href="#" class="link clipboard" data-clipboard-text="{{ char.emoji }}">
+          <h2 class="ma1 f-5 pa3 lh-solid tc">
+            {{ char.emoji }}
+          </h2>
+        </a>
+        <p class="ma1">
+          name:
+          <br />
+          {{ char.name | downcase }}
+        </p>
+        <p class="ma1">
+          code: {{ char.code }}
+        </p>
+        {% if char.keywords %}
+        <p class="ma1">
+          keywords:
+          <br />
+          {% for keyword in char.keywords %}{{ keyword }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+        </p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

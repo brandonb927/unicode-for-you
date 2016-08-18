@@ -1,0 +1,11 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+<script>
+  var clipboard = new Clipboard('.clipboard')
+  clipboard.on('success', function (e) {
+    var elem = e.trigger
+    // console.log(e)
+  })
+  .on('error', function(e) {
+    console.error(e)
+  })
+</script>

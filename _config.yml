@@ -1,0 +1,38 @@
+encoding: 'utf-8'
+language: 'en-us'
+
+# Site Settings
+title: 'Unicode For You'
+author:
+  name: 'Brandon Brown'
+  email: 'brandon@brandonb.io'
+description:
+meta_description:
+meta_image: ''
+
+# Favicons
+favicon:
+  ico: /favicon.ico
+  png: /logo-144.png
+  theme_color: '#FFFFFF'
+
+# Routes
+baseurl: '' # Use if your site is in a subdirectory, e.g. /blog/
+root: /
+permalink: /:title
+
+assets_scripts: /assets/scripts
+assets_styles: /assets/styles
+
+# Build-stuff
+keep_files: [
+  'assets']
+
+# 3rd-party
+social:
+  github: brandonb927
+  twitter: brandonb927
+
+google_analytics:
+  id: UA-XXXXXX-X
+  domain: DOMAIN.COM

@@ -1,0 +1,17 @@
+# Routes
+url: https://unicodeforyou.surge.sh
+
+debug: false
+
+exclude: [
+  '.ruby-version',
+  '.editorconfig',
+  '.bowerrc',
+  'gulpfile.babel.js',
+  'Gemfile',
+  'Gemfile.lock',
+  'package.json',
+  'README.md',
+  'node_modules',
+  'gulp_tasks',
+  'build_dev']

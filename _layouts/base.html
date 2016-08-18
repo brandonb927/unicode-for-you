@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en-US"
+      prefix="og: http://ogp.me/ns#"
+      xmlns:og="http://ogp.me/ns#"
+      {% if !site.debug %}manifest="/auto.appcache"{% endif %}>
+  <head>
+    {% include head.html %}
+  </head>
+  <body class="sans-serif" itemscope itemtype="http://schema.org/WebPage">
+    <div>
+      {% include header.html %}
+      {% include body.html %}
+      {% include footer.html %}
+      {% include foot.html %}
+    </div>
+  </body>
+</html>
