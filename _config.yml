@@ -6,9 +6,9 @@ title: 'Unicode For You'
 author:
   name: 'Brandon Brown'
   email: 'brandon@brandonb.io'
-description:
-meta_description:
-meta_image: ''
+description: Click on an emoji or unicode character to have it copied to your clipboard!
+meta_description: A useful unicode emoji map. Click on a character to have it copied to your clipboard!
+# meta_image: ''
 
 # Favicons
 favicon:
