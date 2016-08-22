@@ -1,7 +1,11 @@
 window.onload = () => {
+  let loadingContainer = document.querySelector('.js-loading-container')
+
   let keywordTitle = document.querySelector('.js-keyword-title')
+  let keywordTitleCopy = document.querySelector('.js-keyword-title-copy')
   let originalTitle = keywordTitle.innerText
 
+  let charList = document.querySelector('.js-char-list')
   let charBlocks = document.querySelectorAll('.js-unicode-char')
 
   // Create a new Clipboard.js object
@@ -12,6 +16,21 @@ window.onload = () => {
     Array.from(charBlocks).forEach((elem) => {
       elem.classList.remove('dn')
       elem.classList.add('flex')
+    })
+  }
+
+  const filterKeyword = () => {
+    let text = keywordTitle.innerText
+
+    Array.from(charBlocks).filter((elem) => {
+      let keywords = elem.getAttribute('data-keywords')
+      if (keywords.includes(text)) {
+        elem.classList.remove('dn')
+        elem.classList.add('flex')
+      } else {
+        elem.classList.remove('flex')
+        elem.classList.add('dn')
+      }
     })
   }
 
@@ -77,26 +96,18 @@ window.onload = () => {
       return resetCharBlocks()
     }
 
-    // TODO: get this working to show chars that match what is being typed
-    let text = keywordTitle.innerText
-
-    Array.from(charBlocks).filter((elem) => {
-      let keywords = elem.getAttribute('data-keywords')
-      if (keywords.includes(text)) {
-        elem.classList.remove('dn')
-        elem.classList.add('flex')
-      } else {
-        elem.classList.remove('flex')
-        elem.classList.add('dn')
-      }
-    })
+    filterKeyword()
   })
 
   // There's 1700+ DOM elements that need to be displayed (for now)
   // After a period of time, show them
   setTimeout(() => {
-    let charList = document.querySelector('.js-char-list')
+    loadingContainer.classList.add('dn')
+
     charList.classList.remove('dn')
     charList.classList.add('db')
+
+    keywordTitleCopy.classList.remove('dn')
+    keywordTitleCopy.classList.add('db')
   }, 3000)
 }

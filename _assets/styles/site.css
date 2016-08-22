@@ -11,6 +11,7 @@
 @import 'tachyons-overflow.css';
 */
 @import 'tachyons-display.css';
+@import 'tachyons-coordinates.css';
 /*
 @import 'tachyons-floats.css';
 @import 'tachyons-clears.css';
@@ -50,3 +51,59 @@
 
 @import 'tachyons-skins.css';
 @import 'tachyons-utilities.css';
+
+
+/* Custom loading css */
+
+@keyframes rock-the-boat {
+  0% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes riding-the-wave {
+  0% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+
+.loading-container {
+  position: relative;
+}
+
+.anim-wave,
+.anim-ship {
+  position: relative;
+  display: inline-block;
+}
+
+.anim-wave {
+  right: -2rem;
+
+  animation-name: rock-the-boat;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  transition-timing-function: ease-in-out;
+}
+
+.anim-ship {
+  left: -2rem;
+  bottom: -0.5rem;
+
+  animation-name: riding-the-wave;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  transition-timing-function: ease-in-out;
+}
