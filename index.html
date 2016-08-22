@@ -20,16 +20,18 @@ layout: base
         </h2>
       </a>
       <p class="ma1">
-        name:
+        <strong>Name</strong>
         <br />
         {{ char.name | downcase }}
       </p>
       <p class="ma1">
-        code: {{ char.code }}
+        <strong>Code</strong>
+        <br />
+        {{ char.code }}
       </p>
       {% if char.keywords %}
       <p class="ma1">
-        keywords:
+        <strong>keywords</strong>
         <br />
         {{ keywords }}
       </p>
