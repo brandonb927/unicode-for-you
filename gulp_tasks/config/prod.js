@@ -1,6 +1,6 @@
 // Production config
 import { resolve } from 'path'
-import { merge }  from 'lodash'
+import { merge } from 'lodash'
 
 import baseConfig from './base'
 
@@ -36,7 +36,7 @@ const baseProdConfig = {
     config: buildConfigFilename
   },
   optimize: {
-    styles:{
+    styles: {
       src: [
         `${buildAssets}/styles/*.css`
       ],

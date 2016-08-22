@@ -42,7 +42,7 @@ const baseDevConfig = {
   delete: {
     src: build
   },
-  styles:{
+  styles: {
     src: `${srcAssets}/styles/site.css`,
     dest: `${buildAssets}/styles`
   },

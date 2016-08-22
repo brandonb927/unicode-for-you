@@ -3,31 +3,38 @@ layout: base
 ---
 
 
-<div class="mw9 center">
+<div class="mw9 center" style="display: none;">
+  SOME STUFF HERE TO BE TRIGGERED WITH JS
+</div>
+
+<div class="mw9 center dn js-char-list">
   <ul class="flex flex-wrap justify-center ma0 pa0 list">
-    {% for char in site.data.unicode %}
-      <li class="flex flex-column w5 ma3 pa3 ba b--light-gray tl">
-        <a href="#" class="link clipboard" data-clipboard-text="{{ char.emoji }}">
-          <h2 class="ma1 f-5 pa3 lh-solid tc">
-            {{ char.emoji }}
-          </h2>
-        </a>
-        <p class="ma1">
-          name:
-          <br />
-          {{ char.name | downcase }}
-        </p>
-        <p class="ma1">
-          code: {{ char.code }}
-        </p>
-        {% if char.keywords %}
-        <p class="ma1">
-          keywords:
-          <br />
-          {% for keyword in char.keywords %}{{ keyword }}{% unless forloop.last %}, {% endunless %}{% endfor %}
-        </p>
-        {% endif %}
-      </li>
-    {% endfor %}
+  {% for char in site.data.unicode %}
+    {% capture keywords %}{% for keyword in char.keywords %}{{ keyword }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endcapture %}
+    <li class="flex flex-column w5 ma3 pa3 ba b--light-gray tl js-unicode-char"
+        data-code="{{ char.code }}"
+        data-keywords="{{ keywords }}">
+      <a href="#" class="link js-clipboard" data-clipboard-text="{{ char.emoji }}">
+        <h2 class="ma1 f-5 pa3 lh-solid tc">
+          {{ char.emoji }}
+        </h2>
+      </a>
+      <p class="ma1">
+        name:
+        <br />
+        {{ char.name | downcase }}
+      </p>
+      <p class="ma1">
+        code: {{ char.code }}
+      </p>
+      {% if char.keywords %}
+      <p class="ma1">
+        keywords:
+        <br />
+        {{ keywords }}
+      </p>
+      {% endif %}
+    </li>
+  {% endfor %}
   </ul>
 </div>

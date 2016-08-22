@@ -12,19 +12,19 @@ import errorHandler from '../utils/errorHandler'
 
 gulp.task('scripts:dev', () => {
   return gulp.src(configDev.scripts.src)
-             .pipe(plumber({errorHandler:errorHandler}))
+             .pipe(plumber({errorHandler: errorHandler}))
              .pipe(sourcemaps.init())
              .pipe(babel())
              .pipe(sourcemaps.write())
              .pipe(duration('Compiling scripts for development'))
              .pipe(gulp.dest(configDev.scripts.dest))
-             .pipe(reload({stream:true}))
+             .pipe(reload({stream: true}))
 })
 
 // Compile babel js files
 gulp.task('scripts:prod', () => {
   return gulp.src(configProd.scripts.src)
-             .pipe(plumber({errorHandler:errorHandler}))
+             .pipe(plumber({errorHandler: errorHandler}))
              .pipe(sourcemaps.init())
              .pipe(babel())
              .pipe(sourcemaps.write())

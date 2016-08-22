@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs'
 import cp from 'child_process'
 import gulp from 'gulp'
 import inlinesource from 'gulp-inline-source'
@@ -6,7 +5,6 @@ import duration from 'gulp-duration'
 import runSequence from 'run-sequence'
 
 import deployConfig from '../config/prod'
-import errorHandler from '../utils/errorHandler'
 
 const deployHtmlPath = `${deployConfig.deploy.src}/*.html`
 
