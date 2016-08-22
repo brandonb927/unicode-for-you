@@ -2,14 +2,18 @@ window.onload = () => {
   let keywordTitle = document.querySelector('.js-keyword-title')
   let originalTitle = keywordTitle.innerText
 
-  let charList = document.querySelector('.js-char-list')
-
   let charBlocks = document.querySelectorAll('.js-unicode-char')
-  let codeCharacterMap = {}
 
   // Create a new Clipboard.js object
   let clipboardBtns = document.querySelectorAll('.js-clipboard')
   let clipboard = new Clipboard(clipboardBtns) // eslint-disable-line
+
+  const resetCharBlocks = () => {
+    Array.from(charBlocks).forEach((elem) => {
+      elem.classList.remove('dn')
+      elem.classList.add('flex')
+    })
+  }
 
   // Stop browser from bubbling the blank hash to the document
   for (let btn of clipboardBtns) {
@@ -17,15 +21,6 @@ window.onload = () => {
       event.preventDefault()
     })
   }
-
-  // Build a map of character codes to keywords so we can do a lookup quickly
-  for (let char of charBlocks) {
-    let code = char.getAttribute('data-code')
-    let keywords = char.getAttribute('data-keywords')
-    codeCharacterMap[code] = keywords.split(', ')
-  }
-  // console.log(Object.keys(codeCharacterMap).length)
-  // console.log(codeCharacterMap)
 
   // Handle Clipboard success
   clipboard.on('success', (e) => {
@@ -49,6 +44,7 @@ window.onload = () => {
     // Escape key, clear the search
     if (event.keyCode === 27) {
       keywordTitle.innerText = originalTitle
+      resetCharBlocks()
     }
 
     // Backspace key, clear the search
@@ -75,23 +71,31 @@ window.onload = () => {
     }
   })
 
-  // Do this separately from above work so as not to block thread too much
-  // document.addEventListener('keyup', (event) => {
-  //   if (event.keyCode === 8) { return }
-  //
-  //   // TODO: get this working to show chars that match what is being typed
-  //   let text = keywordTitle.innerText
-  //   for (let code in codeCharacterMap) {
-  //     let keywords = codeCharacterMap[code]
-  //     keywords.filter((keyword) => {
-  //       return keyword.startsWith(text)
-  //     })
-  //   }
-  // })
+  // Do this separately from above work so as not to block thread
+  document.addEventListener('keyup', (event) => {
+    if (keywordTitle.innerText === originalTitle) {
+      return resetCharBlocks()
+    }
+
+    // TODO: get this working to show chars that match what is being typed
+    let text = keywordTitle.innerText
+
+    Array.from(charBlocks).filter((elem) => {
+      let keywords = elem.getAttribute('data-keywords')
+      if (keywords.includes(text)) {
+        elem.classList.remove('dn')
+        elem.classList.add('flex')
+      } else {
+        elem.classList.remove('flex')
+        elem.classList.add('dn')
+      }
+    })
+  })
 
   // There's 1700+ DOM elements that need to be displayed (for now)
   // After a period of time, show them
   setTimeout(() => {
+    let charList = document.querySelector('.js-char-list')
     charList.classList.remove('dn')
     charList.classList.add('db')
   }, 3000)

@@ -27,8 +27,6 @@ const tachyonsPaths = () => {
 let paths = tachyonsPaths()
 paths = paths.concat(`${nodeModulesPath}/normalize.css`)
 
-
-
 // Compile CSS and add autoprefix things
 gulp.task('styles:dev', () => {
   notify('Compiling styles for development')
