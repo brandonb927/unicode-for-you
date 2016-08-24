@@ -19,28 +19,35 @@ layout: base
     <li class="flex flex-column w5 ma3 pa3 ba b--light-gray tl js-unicode-char"
         data-code="{{ char.code }}"
         data-keywords="{{ keywords }}">
-      <a href="#" class="link js-clipboard" data-clipboard-text="{{ char.emoji }}">
-        <h2 class="ma1 f-5 pa3 lh-solid tc">
-          {{ char.emoji }}
-        </h2>
-      </a>
-      <p class="ma1">
-        <strong>Name</strong>
-        <br />
-        {{ char.name | downcase }}
-      </p>
-      <p class="ma1">
-        <strong>Code</strong>
-        <br />
-        {{ char.code }}
-      </p>
-      {% if char.keywords %}
-      <p class="ma1">
-        <strong>keywords</strong>
-        <br />
-        {{ keywords }}
-      </p>
-      {% endif %}
+      <div class="relative">
+        <a href="#" class="link js-clipboard" data-clipboard-text="{{ char.emoji }}">
+          <h2 class="mv1 f-5 pa3 lh-solid tc">
+            {{ char.emoji }}
+          </h2>
+        </a>
+        <p class="mv1">
+          <strong>Name</strong>
+          <br />
+          {{ char.name | downcase }}
+        </p>
+        <p class="mv1">
+          <strong>Code</strong>
+          <br />
+          {{ char.code }}
+        </p>
+        {% if char.keywords %}
+        <p class="mv1">
+          <strong>keywords</strong>
+          <br />
+          {{ keywords }}
+        </p>
+        {% endif %}
+        <div class="dn o-0 absolute top-0 right-0 bottom-0 left-0 h-100 w-100 tc bg-white-90 notification-overlay js-notification-overlay">
+          <h3 class="flex items-center justify-center f3">
+            COPIED!
+          </h3>
+        </div>
+      </div>
     </li>
   {% endfor %}
   </ul>

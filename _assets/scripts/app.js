@@ -22,9 +22,9 @@ window.onload = () => {
   const filterKeyword = () => {
     let text = keywordTitle.innerText
 
-    Array.from(charBlocks).filter((elem) => {
+    Array.from(charBlocks).forEach((elem) => {
       let keywords = elem.getAttribute('data-keywords')
-      if (keywords.includes(text)) {
+      if (~keywords.indexOf(text)) {
         elem.classList.remove('dn')
         elem.classList.add('flex')
       } else {
@@ -34,36 +34,22 @@ window.onload = () => {
     })
   }
 
-  // Stop browser from bubbling the blank hash to the document
-  for (let btn of clipboardBtns) {
-    btn.addEventListener('click', (event) => {
-      event.preventDefault()
-    })
+  const keyupHandler = (event) => {
+    if (keywordTitle.innerText === originalTitle) {
+      return resetCharBlocks()
+    }
+
+    filterKeyword()
   }
 
-  // Handle Clipboard success
-  clipboard.on('success', (e) => {
-    let character = e.text
-    Notification.requestPermission() // eslint-disable-line
-      .then((result) => {
-        let msg = `${character} copied to your clipboard!`
-        let notification = new Notification(msg) // eslint-disable-line
-      })
-  })
-  // Handle Clipboard error
-  .on('error', (e) => {
-    console.error(e)
-  })
-
-  // Capture any keyboard input in the page
-  document.addEventListener('keydown', (event) => {
+  const keydownHandler = (event) => {
     // Arbitrary number for now, but 32 chars should be plenty to search with
     if (keywordTitle.innerText.split('').length >= 32) { return }
 
     // Escape key, clear the search
     if (event.keyCode === 27) {
       keywordTitle.innerText = originalTitle
-      resetCharBlocks()
+      return resetCharBlocks()
     }
 
     // Backspace key, clear the search
@@ -88,16 +74,58 @@ window.onload = () => {
 
       keywordTitle.innerText += event.key
     }
+  }
+
+  const promiseTimeout = (func, ms) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(func())
+      }, ms)
+    })
+  }
+
+  // Stop browser from bubbling the blank hash to the document
+  for (let btn of clipboardBtns) {
+    btn.addEventListener('click', (event) => {
+      event.preventDefault()
+    })
+  }
+
+  clipboard.on('success', (e) => {
+    // Handle Clipboard success
+    let charParentNode = e.trigger.parentNode.parentNode
+
+    // Hacks lie ahead - timing-based animation stuff to curb removing
+    // the block-level CSS in order for the opacity animation to work
+    let overlay = charParentNode.querySelector('.js-notification-overlay')
+    overlay.classList.toggle('dn')
+
+    promiseTimeout(() => {
+      overlay.classList.toggle('o-0')
+      overlay.classList.toggle('o-100')
+    }, 50)
+    .then(() => {
+      return promiseTimeout(() => {
+        overlay.classList.toggle('o-0')
+        overlay.classList.toggle('o-100')
+      }, 2000)
+    })
+    .then(() => {
+      return promiseTimeout(() => {
+        overlay.classList.toggle('dn')
+      }, 300)
+    })
   })
+  .on('error', (e) => {
+    // Handle Clipboard error
+    console.error(e)
+  })
+
+  // Capture any keyboard input in the page
+  document.addEventListener('keydown', keydownHandler)
 
   // Do this separately from above work so as not to block thread
-  document.addEventListener('keyup', (event) => {
-    if (keywordTitle.innerText === originalTitle) {
-      return resetCharBlocks()
-    }
-
-    filterKeyword()
-  })
+  document.addEventListener('keyup', keyupHandler)
 
   // There's 1700+ DOM elements that need to be displayed (for now)
   // After a period of time, show them
