@@ -16,7 +16,7 @@ layout: base
   <ul class="flex flex-wrap justify-center ma0 pa0 list">
   {% for char in site.data.unicode %}
     {% capture keywords %}{% for keyword in char.keywords %}{{ keyword }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endcapture %}
-    <li class="flex flex-column w5 ma3 pa3 ba b--light-gray tl js-unicode-char"
+    <li class="flex flex-column c1 w5 ma3 pa3 ba b--light-gray tl js-unicode-char"
         data-code="{{ char.code }}"
         data-name="{{ char.name | downcase }}"
         data-keywords="{{ keywords }}">

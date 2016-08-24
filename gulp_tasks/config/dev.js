@@ -43,7 +43,7 @@ const baseDevConfig = {
     src: build
   },
   styles: {
-    src: `${srcAssets}/styles/site.css`,
+    src: `${srcAssets}/styles/site.pcss`,
     dest: `${buildAssets}/styles`
   },
   scripts: {

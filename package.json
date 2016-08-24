@@ -16,6 +16,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-cssnano": "^2.1.2",
     "gulp-duration": "0.0.0",
+    "gulp-ext-replace": "^0.3.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-inline-source": "^3.0.0",
     "gulp-notify": "^2.2.0",

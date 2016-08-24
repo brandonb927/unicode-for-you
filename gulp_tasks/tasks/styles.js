@@ -6,6 +6,7 @@ import gulp from 'gulp'
 import duration from 'gulp-duration'
 import postcss from 'gulp-postcss'
 import plumber from 'gulp-plumber'
+import extReplace from 'gulp-ext-replace'
 import sourcemaps from 'gulp-sourcemaps'
 
 import configDev from '../config/dev'
@@ -42,6 +43,7 @@ gulp.task('styles:dev', () => {
              .pipe(postcss(processors))
              .pipe(duration('Compiling styles for development'))
              .pipe(sourcemaps.write())
+             .pipe(extReplace('.css'))
              .pipe(gulp.dest(configDev.styles.dest))
              .pipe(reload({stream: true}))
 })
@@ -58,5 +60,6 @@ gulp.task('styles:prod', () => {
              ]))
              .pipe(duration('Compiling styles for production'))
              .pipe(sourcemaps.write())
+             .pipe(extReplace('.css'))
              .pipe(gulp.dest(configProd.styles.dest))
 })
