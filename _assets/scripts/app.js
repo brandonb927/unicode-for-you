@@ -19,12 +19,15 @@ window.onload = () => {
     })
   }
 
-  const filterKeyword = () => {
+  const filterUnicodeCharacters = () => {
     let text = keywordTitle.innerText
 
     Array.from(charBlocks).forEach((elem) => {
       let keywords = elem.getAttribute('data-keywords')
-      if (~keywords.indexOf(text)) {
+      let name = elem.getAttribute('data-name')
+      let match = ~name.indexOf(text) || ~keywords.indexOf(text)
+
+      if (match) {
         elem.classList.remove('dn')
         elem.classList.add('flex')
       } else {
@@ -39,7 +42,7 @@ window.onload = () => {
       return resetCharBlocks()
     }
 
-    filterKeyword()
+    filterUnicodeCharacters()
   }
 
   const keydownHandler = (event) => {
