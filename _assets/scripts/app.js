@@ -97,10 +97,16 @@ window.onload = () => {
   clipboard.on('success', (e) => {
     // Handle Clipboard success
     let charParentNode = e.trigger.parentNode.parentNode
+    let overlay = charParentNode.querySelector('.js-notification-overlay')
+
+    // Log a GA event
+    ga('send', { // eslint-disable-line
+      eventCategory: `${e.text}`,
+      eventAction: e.action
+    })
 
     // Hacks lie ahead - timing-based animation stuff to curb removing
     // the block-level CSS in order for the opacity animation to work
-    let overlay = charParentNode.querySelector('.js-notification-overlay')
     overlay.classList.toggle('dn')
 
     promiseTimeout(() => {
