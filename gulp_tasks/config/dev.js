@@ -40,7 +40,7 @@ const baseDevConfig = {
     open: false
   },
   delete: {
-    src: build
+    src: `${build}/**/*`
   },
   styles: {
     src: `${srcAssets}/styles/site.pcss`,

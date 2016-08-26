@@ -1,16 +1,9 @@
-window.onload = () => {
-  let loadingContainer = document.querySelector('.js-loading-container')
-
-  let keywordTitle = document.querySelector('.js-keyword-title')
-  let keywordTitleCopy = document.querySelector('.js-keyword-title-copy')
-  let originalTitle = keywordTitle.innerText
-
-  let charList = document.querySelector('.js-char-list')
-  let charBlocks = document.querySelectorAll('.js-unicode-char')
-
-  // Create a new Clipboard.js object
-  let clipboardBtns = document.querySelectorAll('.js-clipboard')
-  let clipboard = new Clipboard(clipboardBtns) // eslint-disable-line
+let onLoad = (unicodeCharacters) => {
+  const htmlToElement = (htmlString) => {
+    let template = document.createElement('template')
+    template.innerHTML = htmlString.trim()
+    return template.content.firstChild
+  }
 
   const resetCharBlocks = () => {
     Array.from(charBlocks).forEach((elem) => {
@@ -87,6 +80,80 @@ window.onload = () => {
     })
   }
 
+  const htmlTemplate = (char) => {
+    let {name, emoji, code, keywords} = char
+
+    let keywordsHTML = ''
+    if (keywords.length > 0) {
+      keywordsHTML = `
+      <p class="mv1">
+        <strong>keywords</strong>
+        <br />
+        ${keywords.toString()}
+      </p>
+      `
+    }
+
+    return htmlToElement(`
+    <li class="flex flex-column
+               c1 w5 ma3 pa3
+               ba b--light-gray tl
+               js-unicode-char"
+        data-code="${code}"
+        data-name="${name}"
+        data-keywords="${keywords}">
+      <div class="relative">
+        <a href="#"
+           class="link js-clipboard"
+           data-clipboard-text="${emoji}">
+          <h2 class="mv1 f-5 pa3 lh-solid tc">
+            ${emoji}
+          </h2>
+        </a>
+        <p class="mv1">
+          <strong>Name</strong>
+          <br />
+          ${name}
+        </p>
+        <p class="mv1">
+          <strong>Code</strong>
+          <br />
+          ${code}
+        </p>
+        ${keywordsHTML}
+        <div class="flex items-center justify-center
+                    absolute top-0 right-0 bottom-0 left-0 h-100 w-100
+                    tc bg-white-90 dn o-0
+                    notification-overlay
+                    js-notification-overlay">
+          <h3 class="f3">
+            COPIED!
+          </h3>
+        </div>
+      </div>
+    </li>
+    `)
+  }
+
+  let charList = document.querySelector('.js-char-list')
+  for (let char of unicodeCharacters) {
+    let template = htmlTemplate(char)
+    charList.appendChild(template)
+  }
+
+  let loadingContainer = document.querySelector('.js-loading-container')
+
+  let keywordTitle = document.querySelector('.js-keyword-title')
+  let keywordTitleCopy = document.querySelector('.js-keyword-title-copy')
+  let originalTitle = keywordTitle.innerText
+
+  let charListContainer = document.querySelector('.js-char-list-container')
+  let charBlocks = document.querySelectorAll('.js-unicode-char')
+
+  // Create a new Clipboard.js object
+  let clipboardBtns = document.querySelectorAll('.js-clipboard')
+  let clipboard = new Clipboard(clipboardBtns) // eslint-disable-line
+
   // Stop browser from bubbling the blank hash to the document
   for (let btn of clipboardBtns) {
     btn.addEventListener('click', (event) => {
@@ -141,10 +208,16 @@ window.onload = () => {
   setTimeout(() => {
     loadingContainer.classList.add('dn')
 
-    charList.classList.remove('dn')
-    charList.classList.add('db')
+    charListContainer.classList.remove('dn')
+    charListContainer.classList.add('db')
 
     keywordTitleCopy.classList.remove('dn')
     keywordTitleCopy.classList.add('db')
   }, 3000)
 }
+
+fetch('/unicode.json') // eslint-disable-line
+  .then((response) => {
+    return response.json()
+  })
+  .then(onLoad)

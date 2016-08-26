@@ -26,7 +26,8 @@ assets_styles: /assets/styles
 
 # Build-stuff
 keep_files: [
-  'assets']
+  'assets',
+  'unicode.json']
 
 # 3rd-party
 social:

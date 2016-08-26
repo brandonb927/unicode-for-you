@@ -1,11 +1,6 @@
 # Routes
 url: "http://localhost:8888"
 
-# Disable some things for development
-google_analytics:
-  id: false
-  domain: false
-
 # Build settings
 exclude: [
   '.ruby-version',

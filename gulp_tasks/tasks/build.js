@@ -6,18 +6,18 @@ import runSequence from 'run-sequence'
 gulp.task('build:dev', (callback) => {
   if (argv.updateUnicode) {
     runSequence(
-      'delete:dev',
-      'unicode_scraper',
+      // 'delete:dev',
       'jekyll-build:dev',
       [
         'styles:dev',
         'scripts:dev'
       ],
+      'unicode_scraper:dev',
       callback
     )
   } else {
     runSequence(
-      'delete:dev',
+      // 'delete:dev',
       'jekyll-build:dev',
       [
         'styles:dev',
@@ -31,18 +31,18 @@ gulp.task('build:dev', (callback) => {
 gulp.task('build:prod', (callback) => {
   if (argv.updateUnicode) {
     runSequence(
-      'delete:prod',
-      'unicode_scraper',
+      // 'delete:prod',
       'jekyll-build:prod',
       [
         'styles:prod',
         'scripts:prod'
       ],
+      'unicode_scraper:prod',
       callback
     )
   } else {
     runSequence(
-      'delete:prod',
+      // 'delete:prod',
       'jekyll-build:prod',
       [
         'styles:prod',

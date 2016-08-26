@@ -12,44 +12,6 @@ layout: base
   </p>
 </div>
 
-<div class="mw9 center dn js-char-list">
-  <ul class="flex flex-wrap justify-center ma0 pa0 list">
-  {% for char in site.data.unicode %}
-    {% capture keywords %}{% for keyword in char.keywords %}{{ keyword }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endcapture %}
-    <li class="flex flex-column c1 w5 ma3 pa3 ba b--light-gray tl js-unicode-char"
-        data-code="{{ char.code }}"
-        data-name="{{ char.name | downcase }}"
-        data-keywords="{{ keywords }}">
-      <div class="relative">
-        <a href="#" class="link js-clipboard" data-clipboard-text="{{ char.emoji }}">
-          <h2 class="mv1 f-5 pa3 lh-solid tc">
-            {{ char.emoji }}
-          </h2>
-        </a>
-        <p class="mv1">
-          <strong>Name</strong>
-          <br />
-          {{ char.name | downcase }}
-        </p>
-        <p class="mv1">
-          <strong>Code</strong>
-          <br />
-          {{ char.code }}
-        </p>
-        {% if char.keywords %}
-        <p class="mv1">
-          <strong>keywords</strong>
-          <br />
-          {{ keywords }}
-        </p>
-        {% endif %}
-        <div class="dn o-0 flex items-center justify-center absolute top-0 right-0 bottom-0 left-0 h-100 w-100 tc bg-white-90 notification-overlay js-notification-overlay">
-          <h3 class="f3">
-            COPIED!
-          </h3>
-        </div>
-      </div>
-    </li>
-  {% endfor %}
-  </ul>
+<div class="mw9 center dn js-char-list-container">
+  <ul class="flex flex-wrap justify-center ma0 pa0 list js-char-list"></ul>
 </div>

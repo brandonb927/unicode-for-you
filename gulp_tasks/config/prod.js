@@ -20,7 +20,7 @@ const baseProdConfig = {
     dest: build
   },
   delete: {
-    src: build
+    src: `${build}/**/*`
   },
   styles: {
     src: `${srcAssets}/styles/site.pcss`,
