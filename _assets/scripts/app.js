@@ -82,6 +82,7 @@ let onLoad = (unicodeCharacters) => {
 
   const htmlTemplate = (char) => {
     let {name, emoji, code, keywords} = char
+    name = name.toLowerCase()
 
     let keywordsHTML = ''
     if (keywords.length > 0) {
@@ -89,7 +90,7 @@ let onLoad = (unicodeCharacters) => {
       <p class="mv1">
         <strong>keywords</strong>
         <br />
-        ${keywords.toString()}
+        ${keywords.join(', ')}
       </p>
       `
     }
