@@ -14,6 +14,7 @@ let onLoad = (unicodeCharacters) => {
 
   const filterUnicodeCharacters = () => {
     let text = keywordTitle.innerText
+    let charsShown = charBlocks.length
 
     Array.from(charBlocks).forEach((elem) => {
       let keywords = elem.getAttribute('data-keywords')
@@ -23,11 +24,19 @@ let onLoad = (unicodeCharacters) => {
       if (match) {
         elem.classList.remove('dn')
         elem.classList.add('flex')
+        charsShown += 1
       } else {
         elem.classList.remove('flex')
         elem.classList.add('dn')
+        charsShown -= 1
       }
     })
+
+    if (charsShown === 0) {
+      noFilterMatch.classList.remove('dn')
+    } else {
+      noFilterMatch.classList.add('dn')
+    }
   }
 
   const keyupHandler = (event) => {
@@ -142,6 +151,7 @@ let onLoad = (unicodeCharacters) => {
     charList.appendChild(template)
   }
 
+  let noFilterMatch = document.querySelector('.js-no-filter-match')
   let loadingContainer = document.querySelector('.js-loading-container')
 
   let keywordTitle = document.querySelector('.js-keyword-title')
