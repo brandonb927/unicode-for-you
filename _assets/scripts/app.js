@@ -1,10 +1,20 @@
 let onLoad = (unicodeCharacters) => {
+  // Helper functions
+  const promiseTimeout = (func, ms) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(func())
+      }, ms)
+    })
+  }
+
   const htmlToElement = (htmlString) => {
     let template = document.createElement('template')
     template.innerHTML = htmlString.trim()
     return template.content.firstChild
   }
 
+  // Core app functions
   const resetCharBlocks = () => {
     Array.from(charBlocks).forEach((elem) => {
       elem.classList.remove('dn')
@@ -13,7 +23,7 @@ let onLoad = (unicodeCharacters) => {
   }
 
   const filterUnicodeCharacters = () => {
-    let text = keywordTitle.innerText
+    let text = keywordTitle.textContent
     let charsShown = charBlocks.length
 
     Array.from(charBlocks).forEach((elem) => {
@@ -40,7 +50,7 @@ let onLoad = (unicodeCharacters) => {
   }
 
   const keyupHandler = (event) => {
-    if (keywordTitle.innerText === originalTitle) {
+    if (keywordTitle.textContent === originalTitle) {
       return resetCharBlocks()
     }
 
@@ -49,44 +59,76 @@ let onLoad = (unicodeCharacters) => {
 
   const keydownHandler = (event) => {
     // Arbitrary number for now, but 32 chars should be plenty to search with
-    if (keywordTitle.innerText.split('').length >= 32) { return }
+    if (keywordTitle.textContent.split('').length >= 32) { return }
 
     // Escape key, clear the search
     if (event.keyCode === 27) {
-      keywordTitle.innerText = originalTitle
+      keywordTitle.textContent = originalTitle
       return resetCharBlocks()
     }
 
     // Backspace key, clear the search
     if (event.keyCode === 8) {
-      if (keywordTitle.innerText === originalTitle) { return }
+      if (keywordTitle.textContent === originalTitle) { return }
 
-      let title = keywordTitle.innerText.split('')
+      let title = keywordTitle.textContent.split('')
       title.pop()
       let newTitle = title.join('')
-      keywordTitle.innerText = newTitle
+      keywordTitle.textContent = newTitle
 
-      if (keywordTitle.innerText === '') {
-        keywordTitle.innerText = originalTitle
+      if (keywordTitle.textContent === '') {
+        keywordTitle.textContent = originalTitle
       }
     }
 
     // Is key is between a and z?
-    if (event.keyCode >= 65 && event.keyCode <= 90) {
-      if (keywordTitle.innerText === originalTitle) {
-        keywordTitle.innerText = ''
+    if ((event.keyCode >= 65 && event.keyCode <= 90) || event.keyCode === 32) {
+      if (keywordTitle.textContent === originalTitle) {
+        keywordTitle.textContent = ''
       }
 
-      keywordTitle.innerText += event.key
+      // Space needs to override the default handler
+      if (event.keyCode === 32) {
+        event.preventDefault()
+        keywordTitle.textContent += ' '
+      } else {
+        keywordTitle.textContent += event.key
+      }
     }
   }
 
-  const promiseTimeout = (func, ms) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(func())
-      }, ms)
+  const charCopyHandler = (e) => {
+    // Handle Clipboard success
+    let charParentNode = e.trigger.parentNode.parentNode
+    let overlay = charParentNode.querySelector('.js-notification-overlay')
+
+    // Log a GA event
+    ga('send', { // eslint-disable-line
+      eventCategory: `${e.text}`,
+      eventAction: e.action
     })
+
+    // Hacks lie ahead - timing-based animation stuff to curb removing
+    // the block-level CSS in order for the opacity animation to work
+    overlay.classList.toggle('dn')
+
+    promiseTimeout(() => {
+      overlay.classList.toggle('o-0')
+      overlay.classList.toggle('o-100')
+    }, 50)
+    .then(() => {
+      return promiseTimeout(() => {
+        overlay.classList.toggle('o-0')
+        overlay.classList.toggle('o-100')
+      }, 2000)
+    })
+    .then(() => {
+      return promiseTimeout(() => {
+        overlay.classList.toggle('dn')
+      }, 300)
+    })
+
+    window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}` // eslint-disable-line
   }
 
   const htmlTemplate = (char) => {
@@ -156,7 +198,7 @@ let onLoad = (unicodeCharacters) => {
 
   let keywordTitle = document.querySelector('.js-keyword-title')
   let keywordTitleCopy = document.querySelector('.js-keyword-title-copy')
-  let originalTitle = keywordTitle.innerText
+  let originalTitle = keywordTitle.textContent
 
   let charListContainer = document.querySelector('.js-char-list-container')
   let charBlocks = document.querySelectorAll('.js-unicode-char')
@@ -172,41 +214,12 @@ let onLoad = (unicodeCharacters) => {
     })
   }
 
-  clipboard.on('success', (e) => {
-    // Handle Clipboard success
-    let charParentNode = e.trigger.parentNode.parentNode
-    let overlay = charParentNode.querySelector('.js-notification-overlay')
-
-    // Log a GA event
-    ga('send', { // eslint-disable-line
-      eventCategory: `${e.text}`,
-      eventAction: e.action
+  clipboard
+    .on('success', charCopyHandler)
+    .on('error', (e) => {
+      // Handle Clipboard error
+      console.error(e)
     })
-
-    // Hacks lie ahead - timing-based animation stuff to curb removing
-    // the block-level CSS in order for the opacity animation to work
-    overlay.classList.toggle('dn')
-
-    promiseTimeout(() => {
-      overlay.classList.toggle('o-0')
-      overlay.classList.toggle('o-100')
-    }, 50)
-    .then(() => {
-      return promiseTimeout(() => {
-        overlay.classList.toggle('o-0')
-        overlay.classList.toggle('o-100')
-      }, 2000)
-    })
-    .then(() => {
-      return promiseTimeout(() => {
-        overlay.classList.toggle('dn')
-      }, 300)
-    })
-  })
-  .on('error', (e) => {
-    // Handle Clipboard error
-    console.error(e)
-  })
 
   // Capture any keyboard input in the page
   document.addEventListener('keydown', keydownHandler)
@@ -224,6 +237,12 @@ let onLoad = (unicodeCharacters) => {
 
     keywordTitleCopy.classList.remove('dn')
     keywordTitleCopy.classList.add('db')
+
+    if (window.location.hash) {
+      let searchText = window.location.hash.replace('#', '')
+      keywordTitle.textContent = searchText
+      filterUnicodeCharacters()
+    }
   }, 3000)
 }
 
