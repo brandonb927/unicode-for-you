@@ -23,13 +23,20 @@ let onLoad = (unicodeCharacters) => {
   }
 
   const filterUnicodeCharacters = () => {
-    let text = keywordTitle.textContent
+    let text = keywordTitle.textContent.split(' ')
     let charsShown = charBlocks.length
 
     Array.from(charBlocks).forEach((elem) => {
       let keywords = elem.getAttribute('data-keywords')
       let name = elem.getAttribute('data-name')
-      let match = ~name.indexOf(text) || ~keywords.indexOf(text)
+      let match = false
+
+      for (let textItem of text) {
+        match = ~name.indexOf(textItem) || ~keywords.indexOf(textItem)
+        if (match) {
+          break
+        }
+      }
 
       if (match) {
         elem.classList.remove('dn')
@@ -128,7 +135,7 @@ let onLoad = (unicodeCharacters) => {
       }, 300)
     })
 
-    window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}` // eslint-disable-line
+    window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}`
   }
 
   const htmlTemplate = (char) => {
@@ -239,7 +246,7 @@ let onLoad = (unicodeCharacters) => {
     keywordTitleCopy.classList.add('db')
 
     if (window.location.hash) {
-      let searchText = window.location.hash.replace('#', '')
+      let searchText = decodeURIComponent(window.location.hash.replace('#', ''))
       keywordTitle.textContent = searchText
       filterUnicodeCharacters()
     }
