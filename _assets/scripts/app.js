@@ -1,4 +1,10 @@
 let onLoad = (unicodeCharacters) => {
+  const ARROW_LEFT = 37
+  const ARROW_UP = 38
+  const ARROW_RIGHT = 39
+  const ARROW_DOWN = 40
+  const ARROW_KEYS = [ARROW_LEFT, ARROW_UP, ARROW_RIGHT, ARROW_DOWN]
+
   // Helper functions
   const promiseTimeout = (func, ms) => {
     return new Promise((resolve, reject) => {
@@ -56,6 +62,86 @@ let onLoad = (unicodeCharacters) => {
     }
   }
 
+  // TODO: Not sure if this is appropriate use of const here...
+  const handleArrowKeys = (event) => {
+    let firstChar = charList.firstChild
+    let selectedChar = document.querySelector('.js-selected-char')
+    let nextCharElem = null
+
+    if (ARROW_KEYS.includes(event.keyCode)) {
+      event.preventDefault()
+
+      if (selectedChar === null) {
+        selectedChar = firstChar
+      }
+
+      let selectedCharIndex = Array.from(charList.childNodes).indexOf(selectedChar)
+
+      // Calculate how many items wide the grid is
+      // so we can use it to calculate keyboard navigation
+      let gridColumns = 0
+      let gridHeight = 0
+      let prevCoords = null
+
+      Array.from(charList.childNodes).forEach((currElem) => {
+        if (gridHeight >= 1) { return }
+
+        let currElemCoords = currElem.getBoundingClientRect()
+
+        if (prevCoords === null) {
+          prevCoords = currElemCoords
+        }
+
+        if (currElemCoords.left !== prevCoords.left && currElemCoords.top !== prevCoords.top) {
+          return
+        }
+
+        if (currElemCoords.left !== prevCoords.left) {
+          gridColumns++
+        }
+
+        if (currElemCoords.top !== prevCoords.top) {
+          gridHeight++
+        }
+
+        prevCoords = currElemCoords
+      })
+
+      switch (event.keyCode) {
+        case ARROW_UP:
+          nextCharElem = charList.childNodes[selectedCharIndex - gridColumns - 1]
+          break
+        case ARROW_DOWN:
+          nextCharElem = charList.childNodes[selectedCharIndex + gridColumns + 1]
+          break
+        case ARROW_LEFT:
+          nextCharElem = charList.childNodes[selectedCharIndex - 1]
+          break
+        case ARROW_RIGHT:
+          nextCharElem = charList.childNodes[selectedCharIndex + 1]
+          break
+        default:
+          break
+      }
+
+      if (nextCharElem === undefined) {
+        return
+      }
+
+      if (selectedChar === firstChar && !firstChar.classList.contains('outline')) {
+        firstChar.classList.add('outline')
+      } else {
+        firstChar.classList.remove('outline')
+
+        selectedChar.classList.remove('outline')
+        selectedChar.classList.remove('js-selected-char')
+
+        nextCharElem.classList.add('outline')
+        nextCharElem.classList.add('js-selected-char')
+      }
+    }
+  }
+
   const keyupHandler = (event) => {
     if (keywordTitle.textContent === originalTitle) {
       return resetCharBlocks()
@@ -102,6 +188,8 @@ let onLoad = (unicodeCharacters) => {
         keywordTitle.textContent += event.key
       }
     }
+
+    handleArrowKeys(event)
   }
 
   const charCopyHandler = (e) => {
@@ -134,6 +222,8 @@ let onLoad = (unicodeCharacters) => {
         overlay.classList.toggle('dn')
       }, 300)
     })
+
+    if (keywordTitle.textContent === originalTitle) { return }
 
     window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}`
   }
