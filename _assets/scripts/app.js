@@ -128,15 +128,15 @@ let onLoad = (unicodeCharacters) => {
         return
       }
 
-      if (selectedChar === firstChar && !firstChar.classList.contains('outline')) {
-        firstChar.classList.add('outline')
+      if (selectedChar === firstChar && !firstChar.classList.contains('c1-hover')) {
+        firstChar.classList.add('c1-hover')
       } else {
-        firstChar.classList.remove('outline')
+        firstChar.classList.remove('c1-hover')
 
-        selectedChar.classList.remove('outline')
+        selectedChar.classList.remove('c1-hover')
         selectedChar.classList.remove('js-selected-char')
 
-        nextCharElem.classList.add('outline')
+        nextCharElem.classList.add('c1-hover')
         nextCharElem.classList.add('js-selected-char')
       }
     }
