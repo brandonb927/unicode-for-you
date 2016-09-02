@@ -1,9 +1,18 @@
 let onLoad = (unicodeCharacters) => {
+  // Arrow keys
   const ARROW_LEFT = 37
   const ARROW_UP = 38
   const ARROW_RIGHT = 39
   const ARROW_DOWN = 40
   const ARROW_KEYS = [ARROW_LEFT, ARROW_UP, ARROW_RIGHT, ARROW_DOWN]
+
+  // Other keys
+  const KEY_BACKSPACE = 8
+  const KEY_ENTER = 13
+  const KEY_ESC = 27
+  const KEY_SPACE = 32
+  const KEY_ALPHA_A = 65
+  const KEY_ALPHA_Z = 90
 
   // Helper functions
   const promiseTimeout = (func, ms) => {
@@ -186,7 +195,7 @@ let onLoad = (unicodeCharacters) => {
     if (keywordTitle.textContent.split('').length >= 32) { return }
 
     // Escape key, clear the search
-    if (event.keyCode === 27) {
+    if (event.keyCode === KEY_ESC) {
       keywordTitle.textContent = originalTitle
 
       let selectedChar = getSelectedChar()
@@ -198,7 +207,7 @@ let onLoad = (unicodeCharacters) => {
     }
 
     // Backspace key, clear the search
-    if (event.keyCode === 8) {
+    if (event.keyCode === KEY_BACKSPACE) {
       if (keywordTitle.textContent === originalTitle) { return }
 
       let title = keywordTitle.textContent.split('')
@@ -211,14 +220,19 @@ let onLoad = (unicodeCharacters) => {
       }
     }
 
+    // Enter key, trigger copy notification
+    if (event.keyCode === KEY_ENTER) {
+      // TRIGGER COPY
+    }
+
     // Is key is between a and z?
-    if ((event.keyCode >= 65 && event.keyCode <= 90) || event.keyCode === 32) {
+    if ((event.keyCode >= KEY_ALPHA_A && event.keyCode <= KEY_ALPHA_Z) || event.keyCode === KEY_SPACE) {
       if (keywordTitle.textContent === originalTitle) {
         keywordTitle.textContent = ''
       }
 
       // Space needs to override the default handler
-      if (event.keyCode === 32) {
+      if (event.keyCode === KEY_SPACE) {
         event.preventDefault()
         keywordTitle.textContent += ' '
       } else {
