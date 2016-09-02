@@ -14,6 +14,8 @@ let onLoad = (unicodeCharacters) => {
   const KEY_ALPHA_A = 65
   const KEY_ALPHA_Z = 90
 
+  const SELECTED_CHAR_CLASS = '.js-selected-char'
+
   // Helper functions
   const promiseTimeout = (func, ms) => {
     return new Promise((resolve, reject) => {
@@ -34,10 +36,6 @@ let onLoad = (unicodeCharacters) => {
       rect.bottom <= (window.innerHeight || html.clientHeight) &&
       rect.right <= (window.innerWidth || html.clientWidth)
     )
-  }
-
-  const getSelectedChar = () => {
-    return document.querySelector('.js-selected-char')
   }
 
   const htmlToElement = (htmlString) => {
@@ -91,7 +89,7 @@ let onLoad = (unicodeCharacters) => {
   // TODO: Not sure if this is appropriate use of const here...
   const handleArrowKeys = (event) => {
     let firstChar = charList.firstChild
-    let selectedChar = getSelectedChar()
+    let selectedChar = document.querySelector(SELECTED_CHAR_CLASS)
     let nextCharElem = null
 
     if (ARROW_KEYS.includes(event.keyCode)) {
@@ -159,8 +157,10 @@ let onLoad = (unicodeCharacters) => {
 
       if (selectedChar === firstChar && !firstChar.classList.contains('c1-hover')) {
         firstChar.classList.add('c1-hover')
+        firstChar.classList.add('js-selected-char')
       } else {
         firstChar.classList.remove('c1-hover')
+        firstChar.classList.remove('js-selected-char')
 
         selectedChar.classList.remove('c1-hover')
         selectedChar.classList.remove('js-selected-char')
@@ -191,6 +191,8 @@ let onLoad = (unicodeCharacters) => {
   }
 
   const keydownHandler = (event) => {
+    let selectedChar = document.querySelector(SELECTED_CHAR_CLASS)
+
     // Arbitrary number for now, but 32 chars should be plenty to search with
     if (keywordTitle.textContent.split('').length >= 32) { return }
 
@@ -198,7 +200,6 @@ let onLoad = (unicodeCharacters) => {
     if (event.keyCode === KEY_ESC) {
       keywordTitle.textContent = originalTitle
 
-      let selectedChar = getSelectedChar()
       selectedChar.classList.remove('c1-hover')
       selectedChar.classList.remove('js-selected-char')
       window.scrollTo(0, 0)
@@ -222,7 +223,8 @@ let onLoad = (unicodeCharacters) => {
 
     // Enter key, trigger copy notification
     if (event.keyCode === KEY_ENTER) {
-      // TRIGGER COPY
+      // Trigger a click
+      selectedChar.querySelector('.js-clipboard').click()
     }
 
     // Is key is between a and z?
