@@ -14,6 +14,19 @@ let onLoad = (unicodeCharacters) => {
     })
   }
 
+  // Detect if an element is in the viewport
+  // https://gist.github.com/jjmu15/8646226
+  const isInViewport = (element) => {
+    let rect = element.getBoundingClientRect()
+    let html = document.documentElement
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || html.clientHeight) &&
+      rect.right <= (window.innerWidth || html.clientWidth)
+    )
+  }
+
   const htmlToElement = (htmlString) => {
     let template = document.createElement('template')
     template.innerHTML = htmlString.trim()
@@ -82,6 +95,7 @@ let onLoad = (unicodeCharacters) => {
       let gridColumns = 0
       let gridHeight = 0
       let prevCoords = null
+      let scrollingDown = true
 
       Array.from(charList.childNodes).forEach((currElem) => {
         if (gridHeight >= 1) { return }
@@ -110,9 +124,11 @@ let onLoad = (unicodeCharacters) => {
       switch (event.keyCode) {
         case ARROW_UP:
           nextCharElem = charList.childNodes[selectedCharIndex - gridColumns - 1]
+          scrollingDown = false
           break
         case ARROW_DOWN:
           nextCharElem = charList.childNodes[selectedCharIndex + gridColumns + 1]
+          scrollingDown = true
           break
         case ARROW_LEFT:
           nextCharElem = charList.childNodes[selectedCharIndex - 1]
@@ -138,6 +154,17 @@ let onLoad = (unicodeCharacters) => {
 
         nextCharElem.classList.add('c1-hover')
         nextCharElem.classList.add('js-selected-char')
+
+        if (!isInViewport(nextCharElem)) {
+          let scrollHeight = (window.innerHeight / 2)
+
+          if (!scrollingDown) {
+            scrollHeight = -scrollHeight
+          }
+
+          console.log(scrollHeight)
+          window.scrollBy(0, scrollHeight)
+        }
       }
     }
   }
