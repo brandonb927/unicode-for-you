@@ -27,6 +27,10 @@ let onLoad = (unicodeCharacters) => {
     )
   }
 
+  const getSelectedChar = () => {
+    return document.querySelector('.js-selected-char')
+  }
+
   const htmlToElement = (htmlString) => {
     let template = document.createElement('template')
     template.innerHTML = htmlString.trim()
@@ -78,7 +82,7 @@ let onLoad = (unicodeCharacters) => {
   // TODO: Not sure if this is appropriate use of const here...
   const handleArrowKeys = (event) => {
     let firstChar = charList.firstChild
-    let selectedChar = document.querySelector('.js-selected-char')
+    let selectedChar = getSelectedChar()
     let nextCharElem = null
 
     if (ARROW_KEYS.includes(event.keyCode)) {
@@ -184,6 +188,12 @@ let onLoad = (unicodeCharacters) => {
     // Escape key, clear the search
     if (event.keyCode === 27) {
       keywordTitle.textContent = originalTitle
+
+      let selectedChar = getSelectedChar()
+      selectedChar.classList.remove('c1-hover')
+      selectedChar.classList.remove('js-selected-char')
+      window.scrollTo(0, 0)
+
       return resetCharBlocks()
     }
 
