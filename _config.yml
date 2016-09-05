@@ -7,7 +7,9 @@ author:
   name: 'Brandon Brown'
   email: 'brandon@brandonb.io'
 description: ''
-meta_description: A useful unicode emoji map. Click on a character to have it copied to your clipboard!
+meta_description: >
+  A useful unicode/emoji character map. Click on a character to 
+  have it copied to your clipboard, or use your arrow keys and hit enter to copy.
 # meta_image: ''
 
 # Favicons
