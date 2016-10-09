@@ -5,6 +5,7 @@ import plumber from 'gulp-plumber'
 import sourcemaps from 'gulp-sourcemaps'
 import rename from 'gulp-rename'
 import rollup from 'rollup-stream'
+import babel from 'rollup-plugin-babel'
 import buffer from 'vinyl-buffer'
 import source from 'vinyl-source-stream'
 
@@ -14,11 +15,21 @@ import errorHandler from '../utils/errorHandler'
 
 const reload = browserSync.reload
 
+const babelConfig = {
+  exclude: 'node_modules/**',
+  babelrc: false,
+  presets: ['es2015-rollup'],
+  plugins: ['transform-class-properties']
+}
+
 gulp.task('scripts:dev', () => {
   let fileName = configDev.scripts.src.split('/')
   return rollup({
     entry: configDev.scripts.src,
-    sourceMap: true
+    sourceMap: true,
+    plugins: [
+      babel(babelConfig)
+    ]
   })
   .pipe(plumber({errorHandler: errorHandler}))
   .pipe(source(configDev.scripts.src))
@@ -35,7 +46,10 @@ gulp.task('scripts:prod', () => {
   let fileName = configProd.scripts.src.split('/')
   return rollup({
     entry: configProd.scripts.src,
-    sourceMap: true
+    sourceMap: true,
+    plugins: [
+      babel(babelConfig)
+    ]
   })
   .pipe(plumber({errorHandler: errorHandler}))
   .pipe(source(configProd.scripts.src))
