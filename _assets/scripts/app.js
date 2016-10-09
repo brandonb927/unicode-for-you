@@ -29,7 +29,8 @@ fetch('/unicode.json')
       KEY_ENTER,
       KEY_ESC,
       KEY_SPACE
-    ].concat(range(KEY_ALPHA_A, KEY_ALPHA_Z))
+    ].concat(ARROW_KEYS)
+    .concat(range(KEY_ALPHA_A, KEY_ALPHA_Z))
 
     const SELECTED_CHAR_CLASS = '.js-selected-char'
 
@@ -311,7 +312,7 @@ fetch('/unicode.json')
           data-keywords="${keywords}">
         <div class="relative">
           <a href="#"
-             class="link js-clipboard"
+             class="link char-link js-clipboard"
              data-clipboard-text="${emoji}">
             <h2 class="mv1 f-5 pa3 lh-solid tc">
               ${emoji}
