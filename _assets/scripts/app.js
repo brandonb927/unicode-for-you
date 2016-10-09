@@ -264,6 +264,7 @@ fetch('/unicode.json')
 
       // Hacks lie ahead - timing-based animation stuff to curb removing
       // the block-level CSS in order for the opacity animation to work
+      overlay.classList.toggle('notification-overlayshow')
       overlay.classList.toggle('dn')
 
       promiseTimeout(() => {
@@ -279,6 +280,7 @@ fetch('/unicode.json')
       .then(() => {
         return promiseTimeout(() => {
           overlay.classList.toggle('dn')
+          overlay.classList.toggle('notification-overlayshow')
         }, 300)
       })
 
