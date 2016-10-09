@@ -23,6 +23,15 @@ fetch('/unicode.json')
     const KEY_ALPHA_A = 65
     const KEY_ALPHA_Z = 90
 
+    const ALLOWED_KEYS = [
+      KEY_BACKSPACE,
+      KEY_ENTER,
+      KEY_ESC,
+      KEY_SPACE,
+      KEY_ALPHA_A,
+      KEY_ALPHA_Z
+    ]
+
     const SELECTED_CHAR_CLASS = '.js-selected-char'
 
     // Core app functions
@@ -172,6 +181,10 @@ fetch('/unicode.json')
     }
 
     const keydownHandler = (event) => {
+      if (!ALLOWED_KEYS.includes(event.keyCode)) {
+        return
+      }
+
       let selectedChar = document.querySelector(SELECTED_CHAR_CLASS)
 
       // Arbitrary number for now, but 32 chars should be plenty to search with
@@ -181,8 +194,11 @@ fetch('/unicode.json')
       if (event.keyCode === KEY_ESC) {
         keywordTitle.textContent = originalTitle
 
-        selectedChar.classList.remove('c1-hover')
-        selectedChar.classList.remove('js-selected-char')
+        if (selectedChar !== null) {
+          selectedChar.classList.remove('c1-hover')
+          selectedChar.classList.remove('js-selected-char')
+        }
+
         window.scrollTo(0, 0)
 
         return resetCharBlocks()
@@ -205,7 +221,9 @@ fetch('/unicode.json')
       // Enter key, trigger copy notification
       if (event.keyCode === KEY_ENTER) {
         // Trigger a click
-        selectedChar.querySelector('.js-clipboard').click()
+        if (selectedChar !== null) {
+          selectedChar.querySelector('.js-clipboard').click()
+        }
       }
 
       // Is key is between a and z?
