@@ -3,6 +3,7 @@
 import isElementInViewport from './is-element-in-viewport'
 import promiseTimeout from './promise-timeout'
 import htmlToElement from './html-to-element'
+import range from './range'
 
 
 fetch('/unicode.json')
@@ -23,14 +24,12 @@ fetch('/unicode.json')
     const KEY_ALPHA_A = 65
     const KEY_ALPHA_Z = 90
 
-    const ALLOWED_KEYS = [
+    let ALLOWED_KEYS = [
       KEY_BACKSPACE,
       KEY_ENTER,
       KEY_ESC,
-      KEY_SPACE,
-      KEY_ALPHA_A,
-      KEY_ALPHA_Z
-    ]
+      KEY_SPACE
+    ].concat(range(KEY_ALPHA_A, KEY_ALPHA_Z))
 
     const SELECTED_CHAR_CLASS = '.js-selected-char'
 
@@ -181,7 +180,9 @@ fetch('/unicode.json')
     }
 
     const keydownHandler = (event) => {
-      if (!ALLOWED_KEYS.includes(event.keyCode)) {
+      let keyCode = event.keyCode
+
+      if (!ALLOWED_KEYS.includes(keyCode)) {
         return
       }
 
@@ -191,7 +192,7 @@ fetch('/unicode.json')
       if (keywordTitle.textContent.split('').length >= 32) { return }
 
       // Escape key, clear the search
-      if (event.keyCode === KEY_ESC) {
+      if (keyCode === KEY_ESC) {
         keywordTitle.textContent = originalTitle
 
         if (selectedChar !== null) {
@@ -205,7 +206,7 @@ fetch('/unicode.json')
       }
 
       // Backspace key, clear the search
-      if (event.keyCode === KEY_BACKSPACE) {
+      if (keyCode === KEY_BACKSPACE) {
         if (keywordTitle.textContent === originalTitle) { return }
 
         let title = keywordTitle.textContent.split('')
@@ -219,7 +220,7 @@ fetch('/unicode.json')
       }
 
       // Enter key, trigger copy notification
-      if (event.keyCode === KEY_ENTER) {
+      if (keyCode === KEY_ENTER) {
         // Trigger a click
         if (selectedChar !== null) {
           selectedChar.querySelector('.js-clipboard').click()
@@ -227,13 +228,13 @@ fetch('/unicode.json')
       }
 
       // Is key is between a and z?
-      if ((event.keyCode >= KEY_ALPHA_A && event.keyCode <= KEY_ALPHA_Z) || event.keyCode === KEY_SPACE) {
+      if ((keyCode >= KEY_ALPHA_A && keyCode <= KEY_ALPHA_Z) || keyCode === KEY_SPACE) {
         if (keywordTitle.textContent === originalTitle) {
           keywordTitle.textContent = ''
         }
 
         // Space needs to override the default handler
-        if (event.keyCode === KEY_SPACE) {
+        if (keyCode === KEY_SPACE) {
           event.preventDefault()
           keywordTitle.textContent += ' '
         } else {
