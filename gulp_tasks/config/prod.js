@@ -27,7 +27,7 @@ const baseProdConfig = {
     dest: `${buildAssets}/styles`
   },
   scripts: {
-    src: `${srcAssets}/scripts/*.js`,
+    src: `${srcAssets}/scripts/app.js`,
     dest: `${buildAssets}/scripts`
   },
   jekyll: {

@@ -1,5 +1,6 @@
 {
   "presets": [
-    "node6"
+    "node6",
+    "es2015"
   ]
 }

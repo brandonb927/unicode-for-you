@@ -18,7 +18,7 @@ const tachyonsPaths = () => {
   let paths = []
   let modulePaths = readdirSync(nodeModulesPath)
   for (let path of modulePaths) {
-    if (path.startsWith('tachyons-')) {
+    if (path.startsWith('tachyons')) {
       paths.push(`${nodeModulesPath}/${path}/css`)
     }
   }
@@ -26,14 +26,20 @@ const tachyonsPaths = () => {
 }
 
 let paths = tachyonsPaths()
-paths = paths.concat(`${nodeModulesPath}/normalize.css`)
+
+// Concat any extra paths like so
+// paths = paths.concat(`${nodeModulesPath}/normalize.css`)
+
+let atImportConfig = {
+  path: paths
+}
 
 // Compile CSS and add autoprefix things
 gulp.task('styles:dev', () => {
   notify('Compiling styles for development')
 
   let processors = [
-    atImport({path: paths}),
+    atImport(atImportConfig),
     autoprefixer(configDev.styles.autoprefixer)
   ]
 
@@ -55,7 +61,7 @@ gulp.task('styles:prod', () => {
              .pipe(plumber({errorHandler: errorHandler}))
              .pipe(sourcemaps.init())
              .pipe(postcss([
-               atImport({path: paths}),
+               atImport(atImportConfig),
                autoprefixer(configDev.styles.autoprefixer)
              ]))
              .pipe(duration('Compiling styles for production'))
