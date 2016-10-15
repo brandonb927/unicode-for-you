@@ -28,7 +28,7 @@ const tachyonsPaths = () => {
 let paths = tachyonsPaths()
 
 // Concat any extra paths like so
-// paths = paths.concat(`${nodeModulesPath}/normalize.css`)
+// paths = paths.concat(`${nodeModulesPath}/path/to/file`)
 
 let atImportConfig = {
   path: paths
