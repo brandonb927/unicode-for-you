@@ -1,9 +1,11 @@
 /* global fetch */
 
-import isElementInViewport from './is-element-in-viewport'
-import promiseTimeout from './promise-timeout'
-import htmlToElement from './html-to-element'
-import range from './range'
+import styles from '../styles/app.pcss'
+
+import isElementInViewport from './utils/is-element-in-viewport'
+import promiseTimeout from './utils/promise-timeout'
+import htmlToElement from './utils/html-to-element'
+import range from './utils/range'
 
 
 fetch('/unicode.json')
@@ -24,13 +26,14 @@ fetch('/unicode.json')
     const KEY_ALPHA_A = 65
     const KEY_ALPHA_Z = 90
 
-    let ALLOWED_KEYS = [
+    const KEYS_A_TO_Z = range(KEY_ALPHA_A, KEY_ALPHA_Z)
+
+    const ALLOWED_KEYS = [
       KEY_BACKSPACE,
       KEY_ENTER,
       KEY_ESC,
       KEY_SPACE
-    ].concat(ARROW_KEYS)
-    .concat(range(KEY_ALPHA_A, KEY_ALPHA_Z))
+    ].concat(ARROW_KEYS).concat(KEYS_A_TO_Z)
 
     const SELECTED_CHAR_CLASS = '.js-selected-char'
 
