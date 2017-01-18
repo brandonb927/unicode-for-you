@@ -2,9 +2,9 @@ import path from 'path'
 import webpack from 'webpack'
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin'
 
-const DEBUG = process.env.NODE_ENV !== 'production'
+const LOCAL_DEV = process.env.NODE_ENV !== 'production'
 
-export default {
+let config = {
   entry: {
     app: path.join(__dirname, 'src/assets/scripts/app.js')
   },
@@ -12,7 +12,6 @@ export default {
     path: path.join(__dirname, 'dist/assets/scripts'),
     filename: '[name].js'
   },
-  devtool: DEBUG ? 'inline-sourcemap' : null,
   module: {
     rules: [
       {
@@ -20,7 +19,7 @@ export default {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['react']
+            presets: ['es2015', 'react']
           }
         }
       },
@@ -53,16 +52,42 @@ export default {
         ]
       }
     ]
-  },
-  plugins: DEBUG ? [
+  }
+}
+
+if (LOCAL_DEV) {
+  config.devtool = 'inline-sourcemap'
+  config.plugins = [
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 8888,
       server: { baseDir: ['dist'] },
       open: false
     })
-  ] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  ]
+} else {
+  config.plugins = [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        sequences: true,
+        properties: true,
+        drop_debugger: true,
+        dead_code: true,
+        conditionals: true,
+        booleans: true,
+        unused: true,
+        if_return: true,
+        join_vars: true,
+        drop_console: true,
+        warnings: false
+      }
+    })
   ]
 }
+
+export default config

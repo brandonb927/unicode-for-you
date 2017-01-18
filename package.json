@@ -7,6 +7,7 @@
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.18.0",
     "browser-sync": "^2.18.6",
@@ -23,8 +24,9 @@
     "webpack": "^2.2.0"
   },
   "scripts": {
-    "start": "webpack --env development --watch",
-    "build": "webpack --env production",
+    "start": "NODE_ENV=development webpack --env development --watch",
+    "build": "NODE_ENV=production webpack --env production --progress",
+    "deploy": "npm run build && babel-node ./utils/deploy.js",
     "jekyll": "jekyll build",
     "scrape": "babel-node ./utils/scraper.js --presets es2015"
   },
