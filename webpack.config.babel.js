@@ -1,6 +1,8 @@
 import path from 'path'
 import webpack from 'webpack'
+
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const LOCAL_DEV = process.env.NODE_ENV !== 'production'
 
@@ -9,7 +11,7 @@ let config = {
     app: path.join(__dirname, 'src/assets/scripts/app.js')
   },
   output: {
-    path: path.join(__dirname, 'dist/assets/scripts'),
+    path: path.join(__dirname, 'dist/assets'),
     filename: '[name].js'
   },
   module: {
@@ -25,52 +27,54 @@ let config = {
       },
       {
         test: /\.pcss$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => {
-                return [
-                  require('autoprefixer')({
-                    cascade: true,
-                    browsers: [
-                      'last 2 versions',
-                      'android 4'
-                    ]
-                  })
-                ]
-              }
-            }
-          }
-        ]
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: [
+            'css-loader?importLoaders=1',
+            'postcss-loader'
+          ]
+        })
       }
     ]
-  }
+  },
+  plugins : [
+    new ExtractTextPlugin('[name].css'),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: [
+          require('autoprefixer')({
+            cascade: true,
+            browsers: [
+              'last 2 versions',
+              'android 4'
+            ]
+          })
+        ]
+      }
+    })
+  ]
 }
 
 if (LOCAL_DEV) {
   config.devtool = 'inline-sourcemap'
-  config.plugins = [
+
+  config.plugins.push(
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 8888,
       server: { baseDir: ['dist'] },
       open: false
     })
-  ]
+  )
 } else {
-  config.plugins = [
+  config.plugins.push(
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false
-    }),
+    })
+  )
+
+  config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
@@ -87,7 +91,7 @@ if (LOCAL_DEV) {
         warnings: false
       }
     })
-  ]
+  )
 }
 
 export default config
