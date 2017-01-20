@@ -1,18 +1,43 @@
 import path from 'path'
 import webpack from 'webpack'
+import autoprefixer from 'autoprefixer'
 
 import BrowserSyncPlugin from 'browser-sync-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import HtmlWebpackTemplate from 'html-webpack-template'
 
 const LOCAL_DEV = process.env.NODE_ENV !== 'production'
+
+let htmlOptions = {
+  template: HtmlWebpackTemplate,
+  inject: false,
+  title: 'Unicode For You',
+  appMountId: 'app',
+  googleAnalytics: {
+    trackingId: 'UA-XXXX-XX',
+    pageViewOnLoad: true
+  },
+  meta: {
+    description: 'A useful unicode/emoji character map. Click on a character to have it copied to your clipboard, or use your arrow keys and hit enter to copy.'
+  },
+  // favicon: 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=',
+  mobile: true
+}
 
 let config = {
   entry: {
     app: path.join(__dirname, 'src/assets/scripts/app.js')
   },
   output: {
-    path: path.join(__dirname, 'dist/assets'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].js'
+  },
+  resolve: {
+    alias: {
+      'react': 'react-lite',
+      'react-dom': 'react-lite',
+    },
   },
   module: {
     rules: [
@@ -21,7 +46,10 @@ let config = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react']
+            presets: [
+              ["es2015", { "modules": false }],
+              'react'
+            ]
           }
         }
       },
@@ -38,11 +66,12 @@ let config = {
     ]
   },
   plugins : [
+    new HtmlWebpackPlugin(htmlOptions),
     new ExtractTextPlugin('[name].css'),
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: [
-          require('autoprefixer')({
+          autoprefixer({
             cascade: true,
             browsers: [
               'last 2 versions',
@@ -51,7 +80,7 @@ let config = {
           })
         ]
       }
-    })
+    }),
   ]
 }
 
@@ -67,6 +96,9 @@ if (LOCAL_DEV) {
     })
   )
 } else {
+  // Minify HTML in prod
+  htmlOptions.minify = true
+
   config.plugins.push(
     new webpack.LoaderOptionsPlugin({
       minimize: true,

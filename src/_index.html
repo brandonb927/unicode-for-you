@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Unicode For You</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="ClearType" content="true">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <meta name="description" content="A useful unicode/emoji character map. Click on a character to have it copied to your clipboard, or use your arrow keys and hit enter to copy.">
+
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+
+    <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=">
+    <!--[if IE]><link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" /><![endif]-->
+
+    <link href="/assets/app.css" rel="stylesheet" inline>
+
+    <!-- Analytics -->
+    <script>
+      var DEBUG = false
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        DEBUG = true
+      }
+
+      /**
+       * Detect if localStorage exists in the browser
+       */
+      var hasLocalStorage = (function () {
+        try {
+          localStorage.setItem(mod, mod);
+          localStorage.removeItem(mod);
+          return true;
+        }
+        catch (exception) {
+          return false;
+        }
+      }());
+
+      /**
+       * Use localstorage to store the Google tracking cookie
+       * so it's not sent to the server on every request
+       * See: https://github.com/h5bp/html5-boilerplate/issues/1444
+       *
+       * Or, if localStorage isn't available, use the regular Google Analytics code
+       */
+      if (!DEBUG) {
+        var gData = {}
+        if (hasLocalStorage) {
+          gData = {
+            'storage': 'none',
+            'clientId': localStorage.getItem('gaClientId')
+          }
+          (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+          function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+          e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+          e.src='//www.google-analytics.com/analytics.js';
+          r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+          ga('create', 'UA-XXXXX', 'unicodeforyou.surge.sh', gData);
+          ga(function(t){localStorage.setItem('gaClientId',t.get('clientId'));});
+          ga('require', 'displayfeatures');
+          ga('send','pageview');
+        } else {
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-XXXXX', 'unicodeforyou.surge.sh', gData);
+          ga('require', 'displayfeatures');
+          ga('send', 'pageview');
+        }
+      }
+    </script>
+
+  </head>
+  <body class="sans-serif" itemscope itemtype="http://schema.org/WebPage">
+    <div>
+      <header class="mw-100 pv5 center tc" role="banner" itemscope itemtype="http://schema.org/WPHeader">
+        <a href="/" class="dib mv2 ph2 link dark-gray hover-white hover-bg-gray ba b--gray">
+          <h1 id="keyword_title" class="f1 ma0" itemprop="headline">
+            Unicode For You
+          </h1>
+        </a>
+
+        <div id="keyword_title_copy" class="dn">
+          <p class="lh-copy">
+            Start typing to search for a character,
+            <br />
+            then click one to have it copied instantly to your clipboard!
+          </p>
+          <p class="lh-copy">
+            Supports keyboard arrow naviation, and hit <code>Enter</code> to copy to clipboard.
+          </p>
+        </div>
+      </header>
+
+      <main role="main" itemprop="mainContentOfPage">
+        <section itemscope itemtype="http://schema.org/WebSite">
+          <div id="app"></div>
+
+          <!--
+          <div id="loading_container" class="mw9 mb4 center tc loading-container">
+            <div class="f-6">
+              <span class="anim-wave">🌊</span><span class="anim-ship">🛳</span>
+            </div>
+            <p class="f3">
+              Loading…
+            </p>
+          </div>
+
+          <div id="char_list_container" class="mw9 center dn">
+            <ul id="char_list" class="flex flex-wrap justify-center ma0 pa0 list"></ul>
+            <p id="no_filter_match" class="dn f3 tc">
+              Nothing matches your search 😢
+            </p>
+          </div>
+          -->
+        </section>
+      </main>
+
+      <footer class="mw-100 mv5 center tc">
+        <p>
+          Made with ❤ by <a href="https://twitter.com/brandonb927" title="Brandon Brown on Twitter">Brandon Brown</a>
+        </p>
+      </footer>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.1/fetch.min.js'></script>
+      <script src="/assets/app.js"></script>
+    </div>
+  </body>
+</html>
