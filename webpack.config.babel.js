@@ -4,23 +4,14 @@ import autoprefixer from 'autoprefixer'
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import HtmlWebpackTemplate from 'html-webpack-template'
 
 const LOCAL_DEV = process.env.NODE_ENV !== 'production'
 
 let htmlOptions = {
-  template: HtmlWebpackTemplate,
+  template: 'src/assets/index.html',
   inject: false,
   title: 'Unicode For You',
   appMountId: 'app',
-  googleAnalytics: {
-    trackingId: 'UA-XXXX-XX',
-    pageViewOnLoad: true
-  },
-  meta: {
-    description: 'A useful unicode/emoji character map. Click on a character to have it copied to your clipboard, or use your arrow keys and hit enter to copy.'
-  },
-  mobile: true
 }
 
 let config = {

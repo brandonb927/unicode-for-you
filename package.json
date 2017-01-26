@@ -18,12 +18,11 @@
     "extract-text-webpack-plugin": "^2.0.0-beta.5",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.26.0",
-    "html-webpack-template": "^6.0.0",
     "postcss-loader": "^1.2.2",
     "react-lite": "^0.15.31",
     "style-loader": "^0.13.1",
     "sync-request": "^4.0.1",
-    "tachyons": "^4.6.1",
+    "tachyons": "^4.6.2",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^1.16.2",
     "whatwg-fetch": "^2.0.2"
@@ -33,7 +32,7 @@
     "build": "NODE_ENV=production webpack --env production --progress",
     "deploy": "npm run jekyll && npm run build && surge dist --domain=https://unicodeforyou.surge.sh",
     "jekyll": "jekyll build",
-    "scrape": "babel-node ./utils/scraper.js --presets es2015"
+    "scrape": "babel-node ./scraper.js --presets es2015"
   },
   "dependencies": {},
   "babel": {
