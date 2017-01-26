@@ -1,10 +1,15 @@
+import fetch from 'whatwg-fetch'
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 import styles from '../styles/app.pcss'
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import UnicodeForYou from './components/UnicodeForYou'
+
+
 
 ReactDOM.render(
-  <div>Hello world</div>,
+  <UnicodeForYou />,
   document.getElementById('app')
 );
 

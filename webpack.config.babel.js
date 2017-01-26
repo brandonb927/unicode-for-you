@@ -2,7 +2,6 @@ import path from 'path'
 import webpack from 'webpack'
 import autoprefixer from 'autoprefixer'
 
-import BrowserSyncPlugin from 'browser-sync-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import HtmlWebpackTemplate from 'html-webpack-template'
@@ -21,7 +20,6 @@ let htmlOptions = {
   meta: {
     description: 'A useful unicode/emoji character map. Click on a character to have it copied to your clipboard, or use your arrow keys and hit enter to copy.'
   },
-  // favicon: 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=',
   mobile: true
 }
 
@@ -86,15 +84,6 @@ let config = {
 
 if (LOCAL_DEV) {
   config.devtool = 'inline-sourcemap'
-
-  config.plugins.push(
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 8888,
-      server: { baseDir: ['dist'] },
-      open: false
-    })
-  )
 } else {
   // Minify HTML in prod
   htmlOptions.minify = true
