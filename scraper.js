@@ -1,4 +1,6 @@
 import {
+    existsSync,
+    mkdirSync,
     writeFile,
     closeSync,
     openSync
@@ -38,6 +40,9 @@ const UNICODE_FILE = 'dist/unicode.json'
 const UNICODE_URL = 'http://unicode.org/emoji/charts/full-emoji-list.html'
 
 // 'touch' the file first so it exists when writing to it
+if(!existsSync('dist')) {
+  mkdirSync('dist')
+}
 closeSync(openSync(UNICODE_FILE, 'w'))
 
 console.log(chalk.green('Scraping unicode.org, this might take awhile...  '))
