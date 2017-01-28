@@ -8,7 +8,8 @@ export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      unicodeCharacters: []
+      unicodeCharacters: [],
+      isLoaded: false
     }
   }
 
@@ -17,7 +18,8 @@ export default class App extends React.Component {
       .then((response) => { return response.json() })
       .then((unicodeCharacters) => {
         this.setState({
-          unicodeCharacters: unicodeCharacters
+          unicodeCharacters: unicodeCharacters,
+          isLoaded: true
         })
       })
   }
@@ -25,8 +27,12 @@ export default class App extends React.Component {
   render () {
     return (
       <div>
-        <Loader />
-        <CharacterList />
+        <Loader
+          isLoaded={this.state.isLoaded}
+        />
+        <CharacterList
+          {...this.state}
+        />
       </div>
     )
   }
