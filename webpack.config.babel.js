@@ -46,14 +46,13 @@ let uglifyJSOptions = {
 }
 
 export default {
-  entry: {
-    'app': [
-      'react-hot-loader/patch',
-      `webpack-dev-server/client?http://${WP_ADDR}:${WP_PORT}`,
-      'webpack/hot/only-dev-server',
-      path.join(__dirname, 'src/scripts/entry.js'),
-    ]
-  },
+  entry: [
+    'whatwg-fetch',
+    'react-hot-loader/patch',
+    `webpack-dev-server/client?http://${WP_ADDR}:${WP_PORT}`,
+    'webpack/hot/only-dev-server',
+    path.join(__dirname, 'src/scripts/entry.js'),
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -105,7 +104,7 @@ export default {
   },
   plugins : [
     new HtmlWebpackPlugin(htmlOptions),
-    new ExtractTextPlugin('[name].css'),
+    new ExtractTextPlugin('app.css'),
     // NOTE: Enable these as needed
     // new webpack.optimize.UglifyJsPlugin(uglifyJSOptions),
     // new webpack.LoaderOptionsPlugin(loaderOptions),

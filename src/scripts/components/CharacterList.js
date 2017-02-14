@@ -23,9 +23,11 @@ export default function CharacterList (props) {
           })
         }
       </ul>
+      {/*
       <p id="no_filter_match" className="dn f3 tc">
-        Nothing matches your search 😢
+      Nothing matches your search 😢
       </p>
+      */}
     </div>
   )
 }
