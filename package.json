@@ -2,14 +2,16 @@
   "name": "unicodeforyou",
   "private": true,
   "devDependencies": {
-    "autoprefixer": "^6.7.2",
+    "autoprefixer": "^6.7.3",
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
-    "babel-loader": "^6.2.10",
+    "babel-loader": "^6.3.2",
+    "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.23.0",
     "babel-preset-env": "^1.1.8",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.23.0",
     "chalk": "^1.1.3",
     "cheerio": "^0.22.0",
@@ -57,10 +59,12 @@
           "modules": false
         }
       ],
+      "stage-0",
       "react"
     ],
     "plugins": [
       "transform-es2015-modules-commonjs",
+      "transform-class-properties",
       "react-hot-loader/babel"
     ]
   }
