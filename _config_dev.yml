@@ -11,6 +11,7 @@ exclude: [
   'Gemfile.lock',
   'gulpfile.babel.js',
   'package.json',
+  'package-lock.json',
   'gulp_tasks',
   'node_modules',
   'build_prod']
