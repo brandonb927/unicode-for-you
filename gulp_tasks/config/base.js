@@ -1,4 +1,4 @@
-import { normalize, resolve } from 'path';
+const { normalize, resolve } = require('path');
 
 const base = normalize(`${__dirname}/../..`);
 
@@ -49,4 +49,4 @@ baseConfig.scripts = {
   }
 };
 
-export default baseConfig;
+module.exports = baseConfig;

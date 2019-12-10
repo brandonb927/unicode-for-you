@@ -1,11 +1,11 @@
 // Development config
 
-import { existsSync } from 'fs';
-import { extname, join, resolve } from 'path';
-import { parse } from 'url';
-import { merge } from 'lodash';
+const { existsSync } = require('fs');
+const { extname, join, resolve } = require('path');
+const { parse } = require('url');
+const { merge } = require('lodash');
 
-import baseConfig from './base';
+const baseConfig = require('./base');
 
 // Paths
 const src = baseConfig.src.base;
@@ -61,5 +61,4 @@ const baseDevConfig = {
 };
 
 const devConfig = merge(baseDevConfig, baseConfig);
-
-export default devConfig;
+module.exports = devConfig;
