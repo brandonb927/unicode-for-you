@@ -43,9 +43,7 @@
     "lint": "prettier --check '**/*.{js,ts}'",
     "prettier": "prettier --write '**/*.{js,ts}'",
     "start": "NODE_ENV=development gulp",
-    "deploy": "npm run scrape:prod && gulp deploy",
-    "scrape:dev": "gulp unicode_scraper:dev",
-    "scrape:prod": "gulp unicode_scraper:prod"
+    "deploy": "npm run scrape:prod && gulp deploy"
   },
   "dependencies": {
     "@babel/core": "7.7.5",

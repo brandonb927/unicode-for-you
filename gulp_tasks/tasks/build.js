@@ -9,7 +9,6 @@ gulp.task('build:dev', callback => {
       // 'delete:dev',
       'jekyll-build:dev',
       ['styles:dev', 'scripts:dev'],
-      'unicode_scraper:dev',
       callback
     );
   } else {
@@ -28,7 +27,6 @@ gulp.task('build:prod', callback => {
       // 'delete:prod',
       'jekyll-build:prod',
       ['styles:prod', 'scripts:prod'],
-      'unicode_scraper:prod',
       callback
     );
   } else {

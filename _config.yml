@@ -27,7 +27,7 @@ assets_scripts: /assets/scripts
 assets_styles: /assets/styles
 
 # Build-stuff
-keep_files: ["assets", "unicode.json"]
+keep_files: ["assets"]
 
 # 3rd-party
 social:

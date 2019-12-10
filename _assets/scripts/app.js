@@ -1,11 +1,11 @@
-/* global fetch */
-
 import isElementInViewport from './is-element-in-viewport';
 import promiseTimeout from './promise-timeout';
 import htmlToElement from './html-to-element';
 import range from './range';
 
-fetch('/unicode.json')
+const emojiVersion = '12.1.0';
+
+fetch(`https://unpkg.com/emoji.json@${emojiVersion}/emoji.json`)
   .then(response => {
     return response.json();
   })
@@ -202,49 +202,48 @@ fetch('/unicode.json')
         return;
       }
 
-      // Escape key, clear the search
-      if (keyCode === KEY_ESC) {
-        keywordTitle.textContent = originalTitle;
-
-        if (selectedChar !== null) {
-          selectedChar.classList.remove('c1-hover');
-          selectedChar.classList.remove('js-selected-char');
-        }
-
-        window.scrollTo(0, 0);
-
-        return resetCharBlocks();
-      }
-
-      // Backspace key, clear the search
-      if (keyCode === KEY_BACKSPACE) {
-        if (keywordTitle.textContent === originalTitle) {
-          return;
-        }
-
-        let title = keywordTitle.textContent.split('');
-        title.pop();
-        let newTitle = title.join('');
-        keywordTitle.textContent = newTitle;
-
-        if (keywordTitle.textContent === '') {
+      switch (keyCode) {
+        // Escape key, clear the search
+        case KEY_ESC:
           keywordTitle.textContent = originalTitle;
-        }
+
+          if (selectedChar !== null) {
+            selectedChar.classList.remove('c1-hover');
+            selectedChar.classList.remove('js-selected-char');
+          }
+
+          window.scrollTo(0, 0);
+
+          return resetCharBlocks();
+
+        // Backspace key, clear the search
+        case KEY_BACKSPACE:
+          if (keywordTitle.textContent === originalTitle) {
+            return;
+          }
+
+          let title = keywordTitle.textContent.split('');
+          title.pop();
+          let newTitle = title.join('');
+          keywordTitle.textContent = newTitle;
+
+          if (keywordTitle.textContent === '') {
+            keywordTitle.textContent = originalTitle;
+          }
+
+        // Enter key, trigger copy notification
+        case KEY_ENTER:
+          // Trigger a click
+          if (selectedChar !== null) {
+            selectedChar.querySelector('.js-clipboard').click();
+          }
       }
 
-      // Enter key, trigger copy notification
-      if (keyCode === KEY_ENTER) {
-        // Trigger a click
-        if (selectedChar !== null) {
-          selectedChar.querySelector('.js-clipboard').click();
-        }
-      }
-
-      // Is key is between a and z?
       if (
         (keyCode >= KEY_ALPHA_A && keyCode <= KEY_ALPHA_Z) ||
         keyCode === KEY_SPACE
       ) {
+        // Is key is between a and z?
         if (keywordTitle.textContent === originalTitle) {
           keywordTitle.textContent = '';
         }
@@ -273,7 +272,6 @@ fetch('/unicode.json')
 
       // Log a GA event
       ga('send', {
-        // eslint-disable-line
         eventCategory: `${e.text}`,
         eventAction: e.action
       });
@@ -308,28 +306,17 @@ fetch('/unicode.json')
     };
 
     const htmlTemplate = char => {
-      let { name, emoji, code, keywords } = char;
+      let { name, char: emoji, codes, category } = char;
       name = name.toLowerCase();
-
-      let keywordsHTML = '';
-      if (keywords.length > 0) {
-        keywordsHTML = `
-        <p class="mv1">
-          <strong>keywords</strong>
-          <br />
-          ${keywords.join(', ')}
-        </p>
-        `;
-      }
 
       return htmlToElement(`
       <li class="flex flex-column
                  c1 w5 ma3 pa3
                  ba b--light-gray tl
                  js-unicode-char"
-          data-code="${code}"
+          data-code="${codes}"
           data-name="${name}"
-          data-keywords="${keywords}">
+          data-keywords="${category}">
         <div class="relative">
           <a href="#"
              class="link char-link js-clipboard"
@@ -346,9 +333,8 @@ fetch('/unicode.json')
           <p class="mv1">
             <strong>Code</strong>
             <br />
-            ${code}
+            ${codes}
           </p>
-          ${keywordsHTML}
           <div class="flex items-center justify-center
                       absolute top-0 right-0 bottom-0 left-0 h-100 w-100
                       tc bg-white-90 dn o-0
@@ -399,7 +385,7 @@ fetch('/unicode.json')
 
     // Create a new Clipboard.js object
     let clipboardBtns = document.querySelectorAll('.js-clipboard');
-    let clipboard = new Clipboard(clipboardBtns); // eslint-disable-line
+    let clipboard = new Clipboard(clipboardBtns);
 
     // Stop browser from bubbling the blank hash to the document
     for (let btn of clipboardBtns) {
