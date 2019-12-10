@@ -1,6 +1,8 @@
 # Routes
 url: "http://localhost:8888"
 
+debug: true
+
 # Build settings
 exclude:
   [
