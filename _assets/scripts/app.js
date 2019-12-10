@@ -191,7 +191,7 @@ fetch('/unicode.json')
     const keydownHandler = event => {
       let keyCode = event.keyCode;
 
-      if (!ALLOWED_KEYS.includes(keyCode)) {
+      if (!ALLOWED_KEYS.includes(keyCode) || event.key === 'Dead') {
         return;
       }
 
