@@ -1,13 +1,13 @@
-import gulp from 'gulp'
-import cp from 'child_process'
-import { notify, reload } from 'browser-sync'
+import gulp from 'gulp';
+import cp from 'child_process';
+import { notify, reload } from 'browser-sync';
 
-import configDev from '../config/dev'
-import configProd from '../config/prod'
+import configDev from '../config/dev';
+import configProd from '../config/prod';
 
 // Build the Jekyll site
-gulp.task('jekyll-build:dev', (callback) => {
-  notify('Compiling Jekyll for development')
+gulp.task('jekyll-build:dev', callback => {
+  notify('Compiling Jekyll for development');
 
   let args = [
     'exec',
@@ -16,17 +16,13 @@ gulp.task('jekyll-build:dev', (callback) => {
     `--source=${configDev.jekyll.src}`,
     `--destination=${configDev.jekyll.dest}`,
     `--config=${configDev.jekyll.config}`
-  ]
+  ];
 
-  return cp.spawn(
-    'bundle',
-    args,
-    { stdio: 'inherit' }
-  ).on('close', callback)
-})
+  return cp.spawn('bundle', args, { stdio: 'inherit' }).on('close', callback);
+});
 
-gulp.task('jekyll-build:prod', (callback) => {
-  notify('Compiling Jekyll for production')
+gulp.task('jekyll-build:prod', callback => {
+  notify('Compiling Jekyll for production');
 
   let args = [
     'exec',
@@ -35,14 +31,10 @@ gulp.task('jekyll-build:prod', (callback) => {
     `--source=${configProd.jekyll.src}`,
     `--destination=${configProd.jekyll.dest}`,
     `--config=${configProd.jekyll.config}`
-  ]
+  ];
 
-  return cp.spawn(
-    'bundle',
-    args,
-    { stdio: 'inherit' }
-  ).on('close', callback)
-})
+  return cp.spawn('bundle', args, { stdio: 'inherit' }).on('close', callback);
+});
 
 // Jekyll site rebuild + browser reload
-gulp.task('jekyll-rebuild', ['jekyll-build:dev'], reload)
+gulp.task('jekyll-rebuild', ['jekyll-build:dev'], reload);

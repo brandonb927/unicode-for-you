@@ -1,18 +1,20 @@
-import notify from 'gulp-notify'
+import notify from 'gulp-notify';
 
-export default function (err) {
+export default function(err) {
   if (err) {
-    let args = Array.prototype.slice.call(arguments)
+    let args = Array.prototype.slice.call(arguments);
 
     // Send error to notification center with gulp-notify
-    notify.onError({
-      title: 'Compile Error',
-      message: '<%= error.message %>'
-    }).apply(this, args)
+    notify
+      .onError({
+        title: 'Compile Error',
+        message: '<%= error.message %>'
+      })
+      .apply(this, args);
 
     // Keep gulp from hanging on this task
-    this.emit('end')
+    this.emit('end');
   } else {
-    return
+    return;
   }
 }

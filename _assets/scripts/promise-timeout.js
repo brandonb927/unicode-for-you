@@ -2,9 +2,9 @@
 const promiseTimeout = (func, ms) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(func())
-    }, ms)
-  })
-}
+      resolve(func());
+    }, ms);
+  });
+};
 
-export default promiseTimeout
+export default promiseTimeout;

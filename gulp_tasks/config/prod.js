@@ -1,17 +1,17 @@
 // Production config
-import { resolve } from 'path'
-import { merge } from 'lodash'
+import { resolve } from 'path';
+import { merge } from 'lodash';
 
-import baseConfig from './base'
+import baseConfig from './base';
 
 // Paths
-const src = baseConfig.src.base
-const srcAssets = baseConfig.src.assets
-const build = resolve(src, 'build_prod')
-const buildAssets = resolve(build, 'assets')
+const src = baseConfig.src.base;
+const srcAssets = baseConfig.src.assets;
+const build = resolve(src, 'build_prod');
+const buildAssets = resolve(build, 'assets');
 
-const prodBuildConfigFilename = resolve(src, '_config_prod.yml')
-const buildConfigFilename = `${baseConfig.jekyll.baseConfig},${prodBuildConfigFilename}`
+const prodBuildConfigFilename = resolve(src, '_config_prod.yml');
+const buildConfigFilename = `${baseConfig.jekyll.baseConfig},${prodBuildConfigFilename}`;
 
 // Config
 const baseProdConfig = {
@@ -37,18 +37,14 @@ const baseProdConfig = {
   },
   optimize: {
     styles: {
-      src: [
-        `${buildAssets}/styles/*.css`
-      ],
+      src: [`${buildAssets}/styles/*.css`],
       dest: `${buildAssets}/styles`,
       options: {
         keepSpecialComments: 0
       }
     },
     scripts: {
-      src: [
-        `${buildAssets}/scripts/*.js`
-      ],
+      src: [`${buildAssets}/scripts/*.js`],
       dest: `${buildAssets}/scripts`,
       options: {}
     },
@@ -61,8 +57,8 @@ const baseProdConfig = {
       }
     }
   }
-}
+};
 
-const prodConfig = merge(baseProdConfig, baseConfig)
+const prodConfig = merge(baseProdConfig, baseConfig);
 
-export default prodConfig
+export default prodConfig;

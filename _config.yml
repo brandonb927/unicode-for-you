@@ -1,14 +1,14 @@
-encoding: 'utf-8'
-language: 'en-us'
+encoding: "utf-8"
+language: "en-us"
 
 # Site Settings
-title: 'Unicode For You'
+title: "Unicode For You"
 author:
-  name: 'Brandon Brown'
-  email: 'brandon@brandonb.io'
-description: ''
+  name: "Brandon Brown"
+  email: "brandon@brandonb.ca"
+description: ""
 meta_description: >
-  A useful unicode/emoji character map. Click on a character to 
+  A useful unicode/emoji character map. Click on a character to
   have it copied to your clipboard, or use your arrow keys and hit enter to copy.
 # meta_image: ''
 
@@ -16,10 +16,10 @@ meta_description: >
 favicon:
   ico: /favicon.ico
   png: /logo-144.png
-  theme_color: '#FFFFFF'
+  theme_color: "#FFFFFF"
 
 # Routes
-baseurl: '' # Use if your site is in a subdirectory, e.g. /blog/
+baseurl: "" # Use if your site is in a subdirectory, e.g. /blog/
 root: /
 permalink: /:title
 
@@ -27,9 +27,7 @@ assets_scripts: /assets/scripts
 assets_styles: /assets/styles
 
 # Build-stuff
-keep_files: [
-  'assets',
-  'unicode.json']
+keep_files: ["assets", "unicode.json"]
 
 # 3rd-party
 social:

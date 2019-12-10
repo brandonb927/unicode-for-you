@@ -1,10 +1,10 @@
-import { normalize, resolve } from 'path'
+import { normalize, resolve } from 'path';
 
-const base = normalize(`${__dirname}/../..`)
+const base = normalize(`${__dirname}/../..`);
 
 const getHomeFolder = () => {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-}
+  return process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
+};
 
 // Export the base config
 const baseConfig = {
@@ -21,17 +21,13 @@ const baseConfig = {
   },
   styles: {
     autoprefixer: {
-      cascade: true,
-      browsers: [
-        'last 2 versions',
-        'android 4'
-      ]
+      cascade: true
     }
   },
   size: {
     showFiles: true
   }
-}
+};
 
 baseConfig.watch = {
   jekyll: [
@@ -42,7 +38,7 @@ baseConfig.watch = {
   ],
   styles: `${baseConfig.src.assets}/styles/*`,
   scripts: `${baseConfig.src.assets}/scripts/*`
-}
+};
 
 baseConfig.scripts = {
   options: {
@@ -51,6 +47,6 @@ baseConfig.scripts = {
   vendor: {
     src: []
   }
-}
+};
 
-export default baseConfig
+export default baseConfig;

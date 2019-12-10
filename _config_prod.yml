@@ -3,16 +3,18 @@ url: https://unicodeforyou.surge.sh
 
 debug: false
 
-exclude: [
-  '.ruby-version',
-  '.editorconfig',
-  '.bowerrc',
-  'gulpfile.babel.js',
-  'Gemfile',
-  'Gemfile.lock',
-  'package.json',
-  'package-lock.json',
-  'README.md',
-  'node_modules',
-  'gulp_tasks',
-  'build_dev']
+exclude:
+  [
+    ".ruby-version",
+    ".editorconfig",
+    ".bowerrc",
+    "gulpfile.babel.js",
+    "Gemfile",
+    "Gemfile.lock",
+    "package.json",
+    "package-lock.json",
+    "README.md",
+    "node_modules",
+    "gulp_tasks",
+    "build_dev",
+  ]

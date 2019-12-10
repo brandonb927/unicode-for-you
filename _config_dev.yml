@@ -2,16 +2,18 @@
 url: "http://localhost:8888"
 
 # Build settings
-exclude: [
-  '.ruby-version',
-  '.editorconfig',
-  '.bowerrc',
-  'README.md',
-  'Gemfile',
-  'Gemfile.lock',
-  'gulpfile.babel.js',
-  'package.json',
-  'package-lock.json',
-  'gulp_tasks',
-  'node_modules',
-  'build_prod']
+exclude:
+  [
+    ".ruby-version",
+    ".editorconfig",
+    ".bowerrc",
+    "README.md",
+    "Gemfile",
+    "Gemfile.lock",
+    "gulpfile.babel.js",
+    "package.json",
+    "package-lock.json",
+    "gulp_tasks",
+    "node_modules",
+    "build_prod",
+  ]

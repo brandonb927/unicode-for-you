@@ -1,222 +1,234 @@
 /* global fetch */
 
-import isElementInViewport from './is-element-in-viewport'
-import promiseTimeout from './promise-timeout'
-import htmlToElement from './html-to-element'
-import range from './range'
-
+import isElementInViewport from './is-element-in-viewport';
+import promiseTimeout from './promise-timeout';
+import htmlToElement from './html-to-element';
+import range from './range';
 
 fetch('/unicode.json')
-  .then((response) => { return response.json() })
-  .then((unicodeCharacters) => {
+  .then(response => {
+    return response.json();
+  })
+  .then(unicodeCharacters => {
     // Arrow keys
-    const ARROW_LEFT = 37
-    const ARROW_UP = 38
-    const ARROW_RIGHT = 39
-    const ARROW_DOWN = 40
-    const ARROW_KEYS = [ARROW_LEFT, ARROW_UP, ARROW_RIGHT, ARROW_DOWN]
+    const ARROW_LEFT = 37;
+    const ARROW_UP = 38;
+    const ARROW_RIGHT = 39;
+    const ARROW_DOWN = 40;
+    const ARROW_KEYS = [ARROW_LEFT, ARROW_UP, ARROW_RIGHT, ARROW_DOWN];
 
     // Other keys
-    const KEY_BACKSPACE = 8
-    const KEY_ENTER = 13
-    const KEY_ESC = 27
-    const KEY_SPACE = 32
-    const KEY_ALPHA_A = 65
-    const KEY_ALPHA_Z = 90
+    const KEY_BACKSPACE = 8;
+    const KEY_ENTER = 13;
+    const KEY_ESC = 27;
+    const KEY_SPACE = 32;
+    const KEY_ALPHA_A = 65;
+    const KEY_ALPHA_Z = 90;
 
-    let ALLOWED_KEYS = [
-      KEY_BACKSPACE,
-      KEY_ENTER,
-      KEY_ESC,
-      KEY_SPACE
-    ].concat(ARROW_KEYS)
-    .concat(range(KEY_ALPHA_A, KEY_ALPHA_Z))
+    let ALLOWED_KEYS = [KEY_BACKSPACE, KEY_ENTER, KEY_ESC, KEY_SPACE]
+      .concat(ARROW_KEYS)
+      .concat(range(KEY_ALPHA_A, KEY_ALPHA_Z));
 
-    const SELECTED_CHAR_CLASS = '.js-selected-char'
+    const SELECTED_CHAR_CLASS = '.js-selected-char';
 
     // Core app functions
     const resetCharBlocks = () => {
-      Array.from(charBlocks).forEach((elem) => {
-        elem.classList.remove('dn')
-        elem.classList.add('flex')
-      })
-    }
+      Array.from(charBlocks).forEach(elem => {
+        elem.classList.remove('dn');
+        elem.classList.add('flex');
+      });
+    };
 
     const filterUnicodeCharacters = () => {
-      let text = keywordTitle.textContent.split(' ')
-      let charsShown = charBlocks.length
+      let text = keywordTitle.textContent.split(' ');
+      let charsShown = charBlocks.length;
 
-      Array.from(charBlocks).forEach((elem) => {
-        let keywords = elem.getAttribute('data-keywords')
-        let name = elem.getAttribute('data-name')
-        let match = false
+      Array.from(charBlocks).forEach(elem => {
+        let keywords = elem.getAttribute('data-keywords');
+        let name = elem.getAttribute('data-name');
+        let match = false;
 
         for (let textItem of text) {
-          match = ~name.indexOf(textItem) || ~keywords.indexOf(textItem)
+          match = ~name.indexOf(textItem) || ~keywords.indexOf(textItem);
           if (match) {
-            break
+            break;
           }
         }
 
         if (match) {
-          elem.classList.remove('dn')
-          elem.classList.add('flex')
-          charsShown += 1
+          elem.classList.remove('dn');
+          elem.classList.add('flex');
+          charsShown += 1;
         } else {
-          elem.classList.remove('flex')
-          elem.classList.add('dn')
-          charsShown -= 1
+          elem.classList.remove('flex');
+          elem.classList.add('dn');
+          charsShown -= 1;
         }
-      })
+      });
 
       if (charsShown === 0) {
-        noFilterMatch.classList.remove('dn')
+        noFilterMatch.classList.remove('dn');
       } else {
-        noFilterMatch.classList.add('dn')
+        noFilterMatch.classList.add('dn');
       }
-    }
+    };
 
     // TODO: Not sure if this is appropriate use of const here...
-    const handleArrowKeys = (event) => {
-      let firstChar = charList.firstChild
-      let selectedChar = document.querySelector(SELECTED_CHAR_CLASS)
-      let nextCharElem = null
+    const handleArrowKeys = event => {
+      let firstChar = charList.firstChild;
+      let selectedChar = document.querySelector(SELECTED_CHAR_CLASS);
+      let nextCharElem = null;
 
       if (ARROW_KEYS.includes(event.keyCode)) {
-        event.preventDefault()
+        event.preventDefault();
 
         if (selectedChar === null) {
-          selectedChar = firstChar
+          selectedChar = firstChar;
         }
 
-        let selectedCharIndex = Array.from(charList.childNodes).indexOf(selectedChar)
+        let selectedCharIndex = Array.from(charList.childNodes).indexOf(
+          selectedChar
+        );
 
         // Calculate how many items wide the grid is
         // so we can use it to calculate keyboard navigation
-        let gridColumns = 0
-        let gridHeight = 0
-        let prevCoords = null
-        let scrollingDown = true
+        let gridColumns = 0;
+        let gridHeight = 0;
+        let prevCoords = null;
+        let scrollingDown = true;
 
-        Array.from(charList.childNodes).forEach((currElem) => {
-          if (gridHeight >= 1) { return }
-
-          let currElemCoords = currElem.getBoundingClientRect()
-
-          if (prevCoords === null) {
-            prevCoords = currElemCoords
+        Array.from(charList.childNodes).forEach(currElem => {
+          if (gridHeight >= 1) {
+            return;
           }
 
-          if (currElemCoords.left !== prevCoords.left && currElemCoords.top !== prevCoords.top) {
-            return
+          let currElemCoords = currElem.getBoundingClientRect();
+
+          if (prevCoords === null) {
+            prevCoords = currElemCoords;
+          }
+
+          if (
+            currElemCoords.left !== prevCoords.left &&
+            currElemCoords.top !== prevCoords.top
+          ) {
+            return;
           }
 
           if (currElemCoords.left !== prevCoords.left) {
-            gridColumns++
+            gridColumns++;
           }
 
           if (currElemCoords.top !== prevCoords.top) {
-            gridHeight++
+            gridHeight++;
           }
 
-          prevCoords = currElemCoords
-        })
+          prevCoords = currElemCoords;
+        });
 
         switch (event.keyCode) {
           case ARROW_UP:
-            nextCharElem = charList.childNodes[selectedCharIndex - gridColumns - 1]
-            scrollingDown = false
-            break
+            nextCharElem =
+              charList.childNodes[selectedCharIndex - gridColumns - 1];
+            scrollingDown = false;
+            break;
           case ARROW_DOWN:
-            nextCharElem = charList.childNodes[selectedCharIndex + gridColumns + 1]
-            scrollingDown = true
-            break
+            nextCharElem =
+              charList.childNodes[selectedCharIndex + gridColumns + 1];
+            scrollingDown = true;
+            break;
           case ARROW_LEFT:
-            nextCharElem = charList.childNodes[selectedCharIndex - 1]
-            break
+            nextCharElem = charList.childNodes[selectedCharIndex - 1];
+            break;
           case ARROW_RIGHT:
-            nextCharElem = charList.childNodes[selectedCharIndex + 1]
-            break
+            nextCharElem = charList.childNodes[selectedCharIndex + 1];
+            break;
           default:
-            break
+            break;
         }
 
         if (nextCharElem === undefined) {
-          return
+          return;
         }
 
-        if (selectedChar === firstChar && !firstChar.classList.contains('c1-hover')) {
-          firstChar.classList.add('c1-hover')
-          firstChar.classList.add('js-selected-char')
+        if (
+          selectedChar === firstChar &&
+          !firstChar.classList.contains('c1-hover')
+        ) {
+          firstChar.classList.add('c1-hover');
+          firstChar.classList.add('js-selected-char');
         } else {
-          firstChar.classList.remove('c1-hover')
-          firstChar.classList.remove('js-selected-char')
+          firstChar.classList.remove('c1-hover');
+          firstChar.classList.remove('js-selected-char');
 
-          selectedChar.classList.remove('c1-hover')
-          selectedChar.classList.remove('js-selected-char')
+          selectedChar.classList.remove('c1-hover');
+          selectedChar.classList.remove('js-selected-char');
 
-          nextCharElem.classList.add('c1-hover')
-          nextCharElem.classList.add('js-selected-char')
+          nextCharElem.classList.add('c1-hover');
+          nextCharElem.classList.add('js-selected-char');
 
           if (!isElementInViewport(nextCharElem)) {
-            let scrollHeight = (window.innerHeight / 2)
+            let scrollHeight = window.innerHeight / 2;
 
             if (!scrollingDown) {
-              scrollHeight = -scrollHeight
+              scrollHeight = -scrollHeight;
             }
 
-            console.log(scrollHeight)
-            window.scrollBy(0, scrollHeight)
+            window.scrollBy(0, scrollHeight);
           }
         }
       }
-    }
+    };
 
-    const keyupHandler = (event) => {
+    const keyupHandler = event => {
       if (keywordTitle.textContent === originalTitle) {
-        return resetCharBlocks()
+        return resetCharBlocks();
       }
 
-      filterUnicodeCharacters()
-    }
+      filterUnicodeCharacters();
+    };
 
-    const keydownHandler = (event) => {
-      let keyCode = event.keyCode
+    const keydownHandler = event => {
+      let keyCode = event.keyCode;
 
       if (!ALLOWED_KEYS.includes(keyCode)) {
-        return
+        return;
       }
 
-      let selectedChar = document.querySelector(SELECTED_CHAR_CLASS)
+      let selectedChar = document.querySelector(SELECTED_CHAR_CLASS);
 
       // Arbitrary number for now, but 32 chars should be plenty to search with
-      if (keywordTitle.textContent.split('').length >= 32) { return }
+      if (keywordTitle.textContent.split('').length >= 32) {
+        return;
+      }
 
       // Escape key, clear the search
       if (keyCode === KEY_ESC) {
-        keywordTitle.textContent = originalTitle
+        keywordTitle.textContent = originalTitle;
 
         if (selectedChar !== null) {
-          selectedChar.classList.remove('c1-hover')
-          selectedChar.classList.remove('js-selected-char')
+          selectedChar.classList.remove('c1-hover');
+          selectedChar.classList.remove('js-selected-char');
         }
 
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
 
-        return resetCharBlocks()
+        return resetCharBlocks();
       }
 
       // Backspace key, clear the search
       if (keyCode === KEY_BACKSPACE) {
-        if (keywordTitle.textContent === originalTitle) { return }
+        if (keywordTitle.textContent === originalTitle) {
+          return;
+        }
 
-        let title = keywordTitle.textContent.split('')
-        title.pop()
-        let newTitle = title.join('')
-        keywordTitle.textContent = newTitle
+        let title = keywordTitle.textContent.split('');
+        title.pop();
+        let newTitle = title.join('');
+        keywordTitle.textContent = newTitle;
 
         if (keywordTitle.textContent === '') {
-          keywordTitle.textContent = originalTitle
+          keywordTitle.textContent = originalTitle;
         }
       }
 
@@ -224,76 +236,82 @@ fetch('/unicode.json')
       if (keyCode === KEY_ENTER) {
         // Trigger a click
         if (selectedChar !== null) {
-          selectedChar.querySelector('.js-clipboard').click()
+          selectedChar.querySelector('.js-clipboard').click();
         }
       }
 
       // Is key is between a and z?
-      if ((keyCode >= KEY_ALPHA_A && keyCode <= KEY_ALPHA_Z) || keyCode === KEY_SPACE) {
+      if (
+        (keyCode >= KEY_ALPHA_A && keyCode <= KEY_ALPHA_Z) ||
+        keyCode === KEY_SPACE
+      ) {
         if (keywordTitle.textContent === originalTitle) {
-          keywordTitle.textContent = ''
+          keywordTitle.textContent = '';
         }
 
         // Space needs to override the default handler
         if (keyCode === KEY_SPACE) {
-          event.preventDefault()
-          keywordTitle.textContent += ' '
+          event.preventDefault();
+          keywordTitle.textContent += ' ';
         } else {
-          keywordTitle.textContent += event.key
+          keywordTitle.textContent += event.key;
         }
       }
 
-      handleArrowKeys(event)
-    }
+      handleArrowKeys(event);
+    };
 
-    const charCopyErrorHandler = (e) => {
+    const charCopyErrorHandler = e => {
       // Handle Clipboard error in the future
-      console.error(e)
-    }
+      console.error(e);
+    };
 
-    const charCopyHandler = (e) => {
+    const charCopyHandler = e => {
       // Handle Clipboard success
-      let charParentNode = e.trigger.parentNode.parentNode
-      let overlay = charParentNode.querySelector('.js-notification-overlay')
+      let charParentNode = e.trigger.parentNode.parentNode;
+      let overlay = charParentNode.querySelector('.js-notification-overlay');
 
       // Log a GA event
-      ga('send', { // eslint-disable-line
+      ga('send', {
+        // eslint-disable-line
         eventCategory: `${e.text}`,
         eventAction: e.action
-      })
+      });
 
       // Hacks lie ahead - timing-based animation stuff to curb removing
       // the block-level CSS in order for the opacity animation to work
-      overlay.classList.toggle('notification-overlayshow')
-      overlay.classList.toggle('dn')
+      overlay.classList.toggle('notification-overlayshow');
+      overlay.classList.toggle('dn');
 
       promiseTimeout(() => {
-        overlay.classList.toggle('o-0')
-        overlay.classList.toggle('o-100')
+        overlay.classList.toggle('o-0');
+        overlay.classList.toggle('o-100');
       }, 50)
-      .then(() => {
-        return promiseTimeout(() => {
-          overlay.classList.toggle('o-0')
-          overlay.classList.toggle('o-100')
-        }, 2000)
-      })
-      .then(() => {
-        return promiseTimeout(() => {
-          overlay.classList.toggle('dn')
-          overlay.classList.toggle('notification-overlayshow')
-        }, 300)
-      })
+        .then(() => {
+          return promiseTimeout(() => {
+            overlay.classList.toggle('o-0');
+            overlay.classList.toggle('o-100');
+          }, 2000);
+        })
+        .then(() => {
+          return promiseTimeout(() => {
+            overlay.classList.toggle('dn');
+            overlay.classList.toggle('notification-overlayshow');
+          }, 300);
+        });
 
-      if (keywordTitle.textContent === originalTitle) { return }
+      if (keywordTitle.textContent === originalTitle) {
+        return;
+      }
 
-      window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}`
-    }
+      window.location.hash = `#${encodeURIComponent(keywordTitle.textContent)}`;
+    };
 
-    const htmlTemplate = (char) => {
-      let {name, emoji, code, keywords} = char
-      name = name.toLowerCase()
+    const htmlTemplate = char => {
+      let { name, emoji, code, keywords } = char;
+      name = name.toLowerCase();
 
-      let keywordsHTML = ''
+      let keywordsHTML = '';
       if (keywords.length > 0) {
         keywordsHTML = `
         <p class="mv1">
@@ -301,7 +319,7 @@ fetch('/unicode.json')
           <br />
           ${keywords.join(', ')}
         </p>
-        `
+        `;
       }
 
       return htmlToElement(`
@@ -342,63 +360,63 @@ fetch('/unicode.json')
           </div>
         </div>
       </li>
-      `)
-    }
+      `);
+    };
 
     const initApp = () => {
-      loadingContainer.classList.add('dn')
+      loadingContainer.classList.add('dn');
 
-      charListContainer.classList.remove('dn')
-      charListContainer.classList.add('db')
+      charListContainer.classList.remove('dn');
+      charListContainer.classList.add('db');
 
-      keywordTitleCopy.classList.remove('dn')
-      keywordTitleCopy.classList.add('db')
+      keywordTitleCopy.classList.remove('dn');
+      keywordTitleCopy.classList.add('db');
 
       if (window.location.hash) {
-        let searchText = decodeURIComponent(window.location.hash.replace('#', ''))
-        keywordTitle.textContent = searchText
-        filterUnicodeCharacters()
+        let searchText = decodeURIComponent(
+          window.location.hash.replace('#', '')
+        );
+        keywordTitle.textContent = searchText;
+        filterUnicodeCharacters();
       }
-    }
+    };
 
-    let charList = document.querySelector('.js-char-list')
+    let charList = document.querySelector('.js-char-list');
     for (let char of unicodeCharacters) {
-      let template = htmlTemplate(char)
-      charList.appendChild(template)
+      let template = htmlTemplate(char);
+      charList.appendChild(template);
     }
 
-    let noFilterMatch = document.querySelector('.js-no-filter-match')
-    let loadingContainer = document.querySelector('.js-loading-container')
+    let noFilterMatch = document.querySelector('.js-no-filter-match');
+    let loadingContainer = document.querySelector('.js-loading-container');
 
-    let keywordTitle = document.querySelector('.js-keyword-title')
-    let keywordTitleCopy = document.querySelector('.js-keyword-title-copy')
-    let originalTitle = keywordTitle.textContent
+    let keywordTitle = document.querySelector('.js-keyword-title');
+    let keywordTitleCopy = document.querySelector('.js-keyword-title-copy');
+    let originalTitle = keywordTitle.textContent;
 
-    let charListContainer = document.querySelector('.js-char-list-container')
-    let charBlocks = document.querySelectorAll('.js-unicode-char')
+    let charListContainer = document.querySelector('.js-char-list-container');
+    let charBlocks = document.querySelectorAll('.js-unicode-char');
 
     // Create a new Clipboard.js object
-    let clipboardBtns = document.querySelectorAll('.js-clipboard')
-    let clipboard = new Clipboard(clipboardBtns) // eslint-disable-line
+    let clipboardBtns = document.querySelectorAll('.js-clipboard');
+    let clipboard = new Clipboard(clipboardBtns); // eslint-disable-line
 
     // Stop browser from bubbling the blank hash to the document
     for (let btn of clipboardBtns) {
-      btn.addEventListener('click', (event) => {
-        event.preventDefault()
-      })
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+      });
     }
 
-    clipboard
-      .on('success', charCopyHandler)
-      .on('error', charCopyErrorHandler)
+    clipboard.on('success', charCopyHandler).on('error', charCopyErrorHandler);
 
     // Capture any keyboard input in the page
-    document.addEventListener('keydown', keydownHandler)
+    document.addEventListener('keydown', keydownHandler);
 
     // Do this separately from above work so as not to block thread
-    document.addEventListener('keyup', keyupHandler)
+    document.addEventListener('keyup', keyupHandler);
 
     // There's 1700+ DOM elements that need to be displayed (for now)
     // After a period of time, show them
-    setTimeout(initApp, 3000)
-  })
+    setTimeout(initApp, 3000);
+  });

@@ -1,20 +1,20 @@
 // Development config
 
-import { existsSync } from 'fs'
-import { extname, join, resolve } from 'path'
-import { parse } from 'url'
-import { merge } from 'lodash'
+import { existsSync } from 'fs';
+import { extname, join, resolve } from 'path';
+import { parse } from 'url';
+import { merge } from 'lodash';
 
-import baseConfig from './base'
+import baseConfig from './base';
 
 // Paths
-const src = baseConfig.src.base
-const srcAssets = baseConfig.src.assets
-const build = resolve(src, 'build_dev')
-const buildAssets = resolve(build, 'assets')
+const src = baseConfig.src.base;
+const srcAssets = baseConfig.src.assets;
+const build = resolve(src, 'build_dev');
+const buildAssets = resolve(build, 'assets');
 
-const devBuildConfigFilename = resolve(src, '_config_dev.yml')
-const buildConfigFilename = `${baseConfig.jekyll.baseConfig},${devBuildConfigFilename}`
+const devBuildConfigFilename = resolve(src, '_config_dev.yml');
+const buildConfigFilename = `${baseConfig.jekyll.baseConfig},${devBuildConfigFilename}`;
 
 // Config
 const baseDevConfig = {
@@ -22,14 +22,17 @@ const baseDevConfig = {
     server: {
       baseDir: build,
       middleware: [
-        (req, res, next) => { // middleware for clean, extensionless URLs
-          let uri = parse(req.url)
-          if (uri.pathname.length > 1 &&
-              extname(uri.pathname) === '' &&
-              existsSync(`${join(build, uri.pathname)}.html`)) {
-            req.url = `${uri.pathname}.html${uri.search || ''}`
+        (req, res, next) => {
+          // middleware for clean, extensionless URLs
+          let uri = parse(req.url);
+          if (
+            uri.pathname.length > 1 &&
+            extname(uri.pathname) === '' &&
+            existsSync(`${join(build, uri.pathname)}.html`)
+          ) {
+            req.url = `${uri.pathname}.html${uri.search || ''}`;
           }
-          next()
+          next();
         }
       ]
     },
@@ -55,8 +58,8 @@ const baseDevConfig = {
     dest: build,
     config: buildConfigFilename
   }
-}
+};
 
-const devConfig = merge(baseDevConfig, baseConfig)
+const devConfig = merge(baseDevConfig, baseConfig);
 
-export default devConfig
+export default devConfig;
