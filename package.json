@@ -36,14 +36,13 @@
     "sync-request": "6.1.0",
     "tachyons": "4.11.1",
     "vinyl-buffer": "1.0.1",
-    "vinyl-source-stream": "1.1.0",
-    "yargs": "15.0.2"
+    "vinyl-source-stream": "1.1.0"
   },
   "scripts": {
     "lint": "prettier --check '**/*.{js,ts}'",
     "prettier": "prettier --write '**/*.{js,ts}'",
     "start": "NODE_ENV=development gulp",
-    "deploy": "npm run scrape:prod && gulp deploy"
+    "deploy": "gulp deploy"
   },
   "dependencies": {
     "@babel/core": "7.7.5",
