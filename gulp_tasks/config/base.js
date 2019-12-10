@@ -33,7 +33,7 @@ baseConfig.watch = {
   jekyll: [
     `${baseConfig.src.base}/*.yml`,
     `${baseConfig.src.base}/_data/*.{json,yml}`,
-    `${baseConfig.src.base}/index.html`,
+    `${baseConfig.src.base}/*.html`,
     `${baseConfig.src.base}/{_layouts,_includes}/*.html`
   ],
   styles: `${baseConfig.src.assets}/styles/*`,
