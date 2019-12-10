@@ -348,8 +348,7 @@ const emojiVersion = '12.1.0';
                 ${codes}
               </p>
             </a>
-            <div class="flex items-center justify-center
-                        absolute top-0 right-0 bottom-0 left-0 h-100 w-100
+            <div class="absolute top-0 right-0 bottom-0 left-0 h-100 w-100
                         tc bg-white-90 dn o-0
                         notification-overlay
                         js-notification-overlay">
