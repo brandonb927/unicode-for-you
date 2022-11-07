@@ -7,7 +7,7 @@
     "@babel/preset-env": "7.7.6",
     "@babel/register": "7.7.4",
     "autoprefixer": "9.7.3",
-    "browser-sync": "2.26.7",
+    "browser-sync": "2.27.10",
     "caniuse-db": "1.0.30001015",
     "cheerio": "1.0.0-rc.3",
     "eslint": "6.7.2",
